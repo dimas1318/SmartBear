@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_line_courses">Курсы</string>
+    <string name="text_line_tools">Настройки</string>
+    <string name="app_name">Умный Мишка</string>
+    <string name="english">Английский</string>
+</resources>
