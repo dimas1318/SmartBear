@@ -1,7 +1,7 @@
 package com.example.android.smartbear.validator;
 
 import com.example.android.smartbear.validator.exception.NotValidDataException;
-import com.example.android.smartbear.validator.exception.TooLondTextException;
+import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
 
 /**
@@ -35,22 +35,22 @@ public class UserDataValidator {
         }
     }
 
-    public static void validatePassword(String password) throws TooShortTextException, TooLondTextException {
+    public static void validatePassword(String password) throws TooShortTextException, TooLongTextException {
         if (password.isEmpty() || password.length() < 4) {
             throw new TooShortTextException();
         } else if (password.length() > 10) {
-            throw new TooLondTextException();
+            throw new TooLongTextException();
         }
     }
 
-    public static void validateReEnterPassword(String reEnterPassword, String password) throws NotValidDataException, TooShortTextException, TooLondTextException {
+    public static void validateReEnterPassword(String reEnterPassword, String password) throws NotValidDataException, TooShortTextException, TooLongTextException {
         if (!password.equals(reEnterPassword)) {
             throw new NotValidDataException();
         } else {
             if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4) {
                 throw new TooShortTextException();
             } else if (reEnterPassword.length() > 10) {
-                throw new TooLondTextException();
+                throw new TooLongTextException();
             }
         }
     }

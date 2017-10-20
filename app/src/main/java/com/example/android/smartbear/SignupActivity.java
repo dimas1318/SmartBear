@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.example.android.smartbear.database.DataBaseManager;
 import com.example.android.smartbear.validator.UserDataValidator;
 import com.example.android.smartbear.validator.exception.NotValidDataException;
-import com.example.android.smartbear.validator.exception.TooLondTextException;
+import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
 
 import butterknife.ButterKnife;
@@ -188,7 +188,7 @@ public class SignupActivity extends AppCompatActivity {
         try {
             UserDataValidator.validatePassword(password);
             passwordText.setError(null);
-        } catch (TooShortTextException | TooLondTextException e) {
+        } catch (TooShortTextException | TooLongTextException e) {
             passwordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         }
@@ -199,7 +199,7 @@ public class SignupActivity extends AppCompatActivity {
         } catch (NotValidDataException e) {
             reEnterPasswordText.setError("Password Do not match");
             valid = false;
-        } catch (TooShortTextException | TooLondTextException e) {
+        } catch (TooShortTextException | TooLongTextException e) {
             reEnterPasswordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         }
