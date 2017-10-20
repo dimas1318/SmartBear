@@ -1,7 +1,9 @@
 package com.example.android.smartbear;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.smartbear.database.DataBaseManager;
 import com.example.android.smartbear.validator.UserDataValidator;
 import com.example.android.smartbear.validator.exception.NotValidDataException;
 import com.example.android.smartbear.validator.exception.TooLondTextException;
@@ -19,12 +22,20 @@ import com.example.android.smartbear.validator.exception.TooShortTextException;
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
+import static com.example.android.smartbear.constants.Constants.ADMIN_KEY;
+import static com.example.android.smartbear.constants.Constants.EMAIL_KEY;
+import static com.example.android.smartbear.constants.Constants.NAME_KEY;
+import static com.example.android.smartbear.constants.Constants.PASSWORD_KEY;
+import static com.example.android.smartbear.constants.Constants.PREFERENCE_FILE_KEY;
+
 /**
  * Created by parsh on 16.10.2017.
  */
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
+
+    SharedPreferences sharedPreferences;
 
     @Bind(R.id.input_name) EditText nameText;
     @Bind(R.id.input_address) EditText addressText;
@@ -40,6 +51,13 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
+
+        nameText.setText("Dima");
+        addressText.setText("Moscow, MIPT");
+        emailText.setText("parshin@google.com");
+        mobileText.setText("9001234567");
+        passwordText.setText("12345");
+        reEnterPasswordText.setText("12345");
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +101,21 @@ public class SignupActivity extends AppCompatActivity {
         String password = passwordText.getText().toString();
         String reEnterPassword = reEnterPasswordText.getText().toString();
 
+        DataBaseManager.saveDataIntoBase(name, address, email, mobile, password, reEnterPassword);
+
+        sharedPreferences = getApplicationContext().getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(EMAIL_KEY, email);
+        editor.putString(NAME_KEY, name);
+        editor.putString(PASSWORD_KEY, password);
+        editor.putBoolean(ADMIN_KEY, false);
+        editor.commit();
+
+        View navHeaderView = MainActivity.getNavigationView().inflateHeaderView(R.layout.nav_header_main);
+        TextView nameInHeader = navHeaderView.findViewById(R.id.name_in_nav_header);
+        nameInHeader.setText(sharedPreferences.getString(NAME_KEY, ""));
+        TextView emailInHeader = navHeaderView.findViewById(R.id.email_in_nav_header);
+        emailInHeader.setText(sharedPreferences.getString(EMAIL_KEY, ""));
         // TODO: Implement your own signup logic here.
 
         new android.os.Handler().postDelayed(
