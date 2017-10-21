@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    private SharedPreferences sharedPreferences;
+    private SessionManager session;
 
     @Bind(R.id.input_email) EditText emailText;
     @Bind(R.id.input_password) EditText passwordText;
@@ -47,6 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        session = new SessionManager(getApplicationContext());
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -89,42 +91,43 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordText.getText().toString();
 
         if (email.equals("admin") && password.equals("admin")) {
-            sharedPreferences = getApplicationContext().getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
-            sharedPreferences = getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EMAIL_KEY, email);
-            editor.putString(NAME_KEY, "Admin");
-            editor.putString(PASSWORD_KEY, password);
-            editor.putBoolean(ADMIN_KEY, true);
-            editor.commit();
+           session.createUserSession(email, password, "Admin", true);
 
-            View navHeaderView = MainActivity.getNavigationView().inflateHeaderView(R.layout.nav_header_main);
-            TextView nameInHeader = navHeaderView.findViewById(R.id.name_in_nav_header);
-            nameInHeader.setText(sharedPreferences.getString(NAME_KEY, "") + " (ya admin)");
-            TextView emailInHeader = navHeaderView.findViewById(R.id.email_in_nav_header);
-            emailInHeader.setText(sharedPreferences.getString(EMAIL_KEY, ""));
-        }
-        // TODO: Implement your own authentication logic here.
+            // TODO: Implement your own authentication logic here.
 
-        new android.os.Handler().postDelayed(
+            new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
-                        progressDialog.dismiss();
+                    // On complete call either onLoginSuccess or onLoginFailed
+                    onLoginSuccess();
+                    // onLoginFailed();
+                    progressDialog.dismiss();
                     }
                 }, 3000);
+        } else {
+            onLoginFailed();
+        }
     }
 
 
+    /**
+     * Implementation of successful signup logic
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
+                // Starting MainActivity
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
+                // Add new Flag to start new Activity
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
                 this.finish();
             }
         }
@@ -138,6 +141,15 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         loginButton.setEnabled(true);
+
+        // Starting MainActivity
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        // Add new Flag to start new Activity
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
         finish();
     }
 

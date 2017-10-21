@@ -21,6 +21,7 @@ import com.example.android.smartbear.courses.CourseFragment;
 import com.example.android.smartbear.database.DataBaseManager;
 import com.example.android.smartbear.tools.ToolsFragment;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -36,42 +37,40 @@ public class MainActivity extends AppCompatActivity
     DrawerLayout drawer;
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
-    static NavigationView navigationView;
+    NavigationView navigationView;
     FragmentTransaction fragmentTransaction;
 
-    SharedPreferences sharedPreferences;
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        session = new SessionManager(getApplicationContext());
+
+        if (session.checkLogin()) {
+            finish();
+        }
+
+        UserModel user = session.getUserDetails();
+        String userName = user.getName();
+        String userEmail = user.getEmail();
+        Boolean userIsAdmin = user.isAdmin();
+
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        sharedPreferences = getApplicationContext().getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
-        if (sharedPreferences != null && sharedPreferences.contains(EMAIL_KEY) && sharedPreferences.contains(PASSWORD_KEY)) {
-            String email = sharedPreferences.getString(EMAIL_KEY, "");
-            String password = sharedPreferences.getString(PASSWORD_KEY, "");
-
-            if (!DataBaseManager.validateUser(email, password)) {
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-            }
-
-            View navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header_main);
-            TextView nameInHeader = navHeaderView.findViewById(R.id.name_in_nav_header);
-            if (sharedPreferences.getBoolean(ADMIN_KEY, false)) {
-                nameInHeader.setText(sharedPreferences.getString(NAME_KEY, "") + " (ya admin)");
-            } else {
-                nameInHeader.setText(sharedPreferences.getString(NAME_KEY, ""));
-            }
-            TextView emailInHeader = navHeaderView.findViewById(R.id.email_in_nav_header);
-            emailInHeader.setText(sharedPreferences.getString(EMAIL_KEY, ""));
+        View navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        TextView nameInHeader = navHeaderView.findViewById(R.id.name_in_nav_header);
+        if (userIsAdmin) {
+            nameInHeader.setText(userName + " (ya admin)");
         } else {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            nameInHeader.setText(userName);
         }
+
+        TextView emailInHeader = navHeaderView.findViewById(R.id.email_in_nav_header);
+        emailInHeader.setText(userEmail);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -116,6 +115,10 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.logout_user) {
+            session.logoutUser();
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -139,9 +142,5 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public static NavigationView getNavigationView() {
-        return navigationView;
     }
 }

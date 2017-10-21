@@ -35,7 +35,7 @@ import static com.example.android.smartbear.constants.Constants.PREFERENCE_FILE_
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    SharedPreferences sharedPreferences;
+    private SessionManager session;
 
     @Bind(R.id.input_name) EditText nameText;
     @Bind(R.id.input_address) EditText addressText;
@@ -51,6 +51,8 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
+
+        session = new SessionManager(getApplicationContext());
 
         nameText.setText("Dima");
         addressText.setText("Moscow, MIPT");
@@ -69,11 +71,16 @@ public class SignupActivity extends AppCompatActivity {
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Finish the registration screen and return to the Login activity
-                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+            // Finish the registration screen and return to the Login activity
+            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            // Add new Flag to start new Activity
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+            finish();
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
     }
@@ -103,31 +110,19 @@ public class SignupActivity extends AppCompatActivity {
 
         DataBaseManager.saveDataIntoBase(name, address, email, mobile, password, reEnterPassword);
 
-        sharedPreferences = getApplicationContext().getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(EMAIL_KEY, email);
-        editor.putString(NAME_KEY, name);
-        editor.putString(PASSWORD_KEY, password);
-        editor.putBoolean(ADMIN_KEY, false);
-        editor.commit();
-
-        View navHeaderView = MainActivity.getNavigationView().inflateHeaderView(R.layout.nav_header_main);
-        TextView nameInHeader = navHeaderView.findViewById(R.id.name_in_nav_header);
-        nameInHeader.setText(sharedPreferences.getString(NAME_KEY, ""));
-        TextView emailInHeader = navHeaderView.findViewById(R.id.email_in_nav_header);
-        emailInHeader.setText(sharedPreferences.getString(EMAIL_KEY, ""));
+        session.createUserSession(email, password, name, false);
         // TODO: Implement your own signup logic here.
 
         new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
+            new Runnable() {
+                public void run() {
+                    // On complete call either onSignupSuccess or onSignupFailed
+                    // depending on success
+                    onSignupSuccess();
+                    // onSignupFailed();
+                    progressDialog.dismiss();
+                }
+            }, 3000);
     }
 
 
