@@ -1,13 +1,10 @@
 package com.example.android.smartbear;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,14 +15,8 @@ import com.example.android.smartbear.validator.UserDataValidator;
 import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
-
-import static com.example.android.smartbear.constants.Constants.ADMIN_KEY;
-import static com.example.android.smartbear.constants.Constants.EMAIL_KEY;
-import static com.example.android.smartbear.constants.Constants.NAME_KEY;
-import static com.example.android.smartbear.constants.Constants.PASSWORD_KEY;
-import static com.example.android.smartbear.constants.Constants.PREFERENCE_FILE_KEY;
+import butterknife.ButterKnife;
 
 /**
  * Created by parsh on 16.10.2017.
@@ -65,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Start the Signup activity
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
-                finish();
+
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
@@ -105,7 +96,13 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }, 3000);
         } else {
-            onLoginFailed();
+            new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                    onLoginFailed();
+                    progressDialog.dismiss();
+                    }
+                }, 3000);
         }
     }
 
@@ -120,14 +117,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-                // Starting MainActivity
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                // Add new Flag to start new Activity
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-
                 this.finish();
             }
         }
@@ -142,12 +133,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         loginButton.setEnabled(true);
 
-        // Starting MainActivity
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        // Add new Flag to start new Activity
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
         finish();

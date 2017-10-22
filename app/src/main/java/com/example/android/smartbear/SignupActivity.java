@@ -1,9 +1,7 @@
 package com.example.android.smartbear;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,14 +17,8 @@ import com.example.android.smartbear.validator.exception.NotValidDataException;
 import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
-
-import static com.example.android.smartbear.constants.Constants.ADMIN_KEY;
-import static com.example.android.smartbear.constants.Constants.EMAIL_KEY;
-import static com.example.android.smartbear.constants.Constants.NAME_KEY;
-import static com.example.android.smartbear.constants.Constants.PASSWORD_KEY;
-import static com.example.android.smartbear.constants.Constants.PREFERENCE_FILE_KEY;
+import butterknife.ButterKnife;
 
 /**
  * Created by parsh on 16.10.2017.
@@ -73,10 +65,6 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View v) {
             // Finish the registration screen and return to the Login activity
             Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            // Add new Flag to start new Activity
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
 
             finish();

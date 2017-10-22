@@ -1,9 +1,5 @@
 package com.example.android.smartbear;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -18,19 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.smartbear.courses.CourseFragment;
-import com.example.android.smartbear.database.DataBaseManager;
 import com.example.android.smartbear.tools.ToolsFragment;
-
-import java.util.HashMap;
-import java.util.Locale;
-
-import butterknife.Bind;
-
-import static com.example.android.smartbear.constants.Constants.ADMIN_KEY;
-import static com.example.android.smartbear.constants.Constants.EMAIL_KEY;
-import static com.example.android.smartbear.constants.Constants.NAME_KEY;
-import static com.example.android.smartbear.constants.Constants.PASSWORD_KEY;
-import static com.example.android.smartbear.constants.Constants.PREFERENCE_FILE_KEY;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
