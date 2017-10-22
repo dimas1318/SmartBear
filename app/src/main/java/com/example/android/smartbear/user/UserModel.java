@@ -1,4 +1,4 @@
-package com.example.android.smartbear;
+package com.example.android.smartbear.user;
 
 /**
  * Created by parsh on 21.10.2017.

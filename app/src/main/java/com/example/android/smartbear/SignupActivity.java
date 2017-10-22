@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.smartbear.database.DataBaseManager;
+import com.example.android.smartbear.session.SessionManager;
+import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.validator.UserDataValidator;
 import com.example.android.smartbear.validator.exception.NotValidDataException;
 import com.example.android.smartbear.validator.exception.TooLongTextException;
@@ -44,7 +46,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
 
-        session = new SessionManager(getApplicationContext());
+        session = new SessionManagerImpl(getApplicationContext());
 
         nameText.setText("Dima");
         addressText.setText("Moscow, MIPT");

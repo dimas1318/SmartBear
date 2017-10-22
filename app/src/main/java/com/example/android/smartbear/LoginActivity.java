@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.smartbear.session.SessionManager;
+import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.validator.UserDataValidator;
 import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
@@ -39,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        session = new SessionManager(getApplicationContext());
+        session = new SessionManagerImpl(getApplicationContext());
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 

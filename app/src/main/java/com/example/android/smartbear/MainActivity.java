@@ -13,8 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.android.smartbear.courses.CourseFragment;
+import com.example.android.smartbear.courses.fragment.CourseFragment;
+import com.example.android.smartbear.session.SessionManager;
+import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.tools.ToolsFragment;
+import com.example.android.smartbear.user.UserModel;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        session = new SessionManager(getApplicationContext());
+        session = new SessionManagerImpl(getApplicationContext());
 
         if (session.checkLogin()) {
             finish();

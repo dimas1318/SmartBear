@@ -1,4 +1,4 @@
-package com.example.android.smartbear.courses;
+package com.example.android.smartbear.courses.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

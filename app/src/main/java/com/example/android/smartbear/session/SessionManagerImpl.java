@@ -1,32 +1,36 @@
-package com.example.android.smartbear;
+package com.example.android.smartbear.session;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.example.android.smartbear.LoginActivity;
+import com.example.android.smartbear.user.UserModel;
+
 /**
  * Created by parsh on 21.10.2017.
  */
 
-public class SessionManager {
+public class SessionManagerImpl implements SessionManager {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private Context context;
 
     private static final String PREFERENCE_FILE_KEY = "KEY";
     private static final String IS_USER_LOGIN = "USER_LOGGED_IN";
-    public static final String EMAIL_KEY = "EMAIL";
-    public static final String NAME_KEY = "NAME";
+    private static final String EMAIL_KEY = "EMAIL";
+    private static final String NAME_KEY = "NAME";
     private static final String PASSWORD_KEY = "PASSWORD";
-    public static final String ADMIN_KEY = "ADMIN";
+    private static final String ADMIN_KEY = "ADMIN";
 
-    public SessionManager(Context context) {
+    public SessionManagerImpl(Context context) {
         this.context = context;
         preferences = context.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
         editor = preferences.edit();
     }
 
     //Create login session
+    @Override
     public void createUserSession(String email, String password, String name, Boolean isAdmin) {
         editor.putBoolean(IS_USER_LOGIN, true);
         editor.putString(EMAIL_KEY, email);
@@ -41,6 +45,7 @@ public class SessionManager {
      * If false it will redirect user to login page
      * @return login status
      */
+    @Override
     public boolean checkLogin() {
         if(!this.isUserLoggedIn()){
             // user is not logged in redirect him to Login Activity
@@ -64,14 +69,15 @@ public class SessionManager {
      * Get stored session credentials
      * @return user model
      */
+    @Override
     public UserModel getUserDetails(){
         String name = preferences.getString(NAME_KEY, null);
         String email = preferences.getString(EMAIL_KEY, null);
         Boolean isAdmin = preferences.getBoolean(ADMIN_KEY, false);
-        UserModel user = new UserModel(name, email, isAdmin);
-        return user;
+        return new UserModel(name, email, isAdmin);
     }
 
+    @Override
     public void logoutUser() {
         // Clearing all user data from Shared Preferences
         editor.clear();
