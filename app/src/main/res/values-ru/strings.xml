@@ -6,4 +6,5 @@
     <string name="app_name">Умный Мишка</string>
     <string name="english">Английский</string>
     <string name="russian">Русский</string>
+    <string name="course_details">Подробнее о курсе</string>
 </resources>

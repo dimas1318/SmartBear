@@ -1,4 +1,4 @@
-package com.example.android.smartbear.courses;
+package com.example.android.smartbear.courses.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,6 @@ import java.util.List;
  */
 
 public class CourseListCache {
-
     private List<CourseListItem> courseList = new ArrayList<>();
 
     public List<CourseListItem> getCourseList() {

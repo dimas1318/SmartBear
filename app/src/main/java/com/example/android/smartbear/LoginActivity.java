@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,6 +18,7 @@ import com.example.android.smartbear.validator.exception.TooShortTextException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by parsh on 16.10.2017.
@@ -43,29 +43,23 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         ButterKnife.bind(this);
 
         session = new SessionManagerImpl(getApplicationContext());
+    }
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+    @OnClick(R.id.btn_login)
+    public void loginButtonClick() {
+        login();
+    }
 
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
+    @OnClick(R.id.link_signup)
+    public void signupLinkClick() {
+        Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+        startActivityForResult(intent, REQUEST_SIGNUP);
 
-        signupLink.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // Start the Signup activity
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
-
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-        });
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public void login() {

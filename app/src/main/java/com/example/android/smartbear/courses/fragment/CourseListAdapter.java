@@ -1,4 +1,4 @@
-package com.example.android.smartbear.courses;
+package com.example.android.smartbear.courses.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,8 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.smartbear.R;
+import com.example.android.smartbear.courses.course_details.CourseDetailsFragment;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Samsung on 26.10.2017.
@@ -58,16 +62,13 @@ public class CourseListAdapter extends RecyclerView.Adapter implements View.OnCl
     }
 
     public static class CourseListViewHolder extends RecyclerView.ViewHolder {
-
-        private ImageView courseLogo;
-        private TextView nameOfCourse;
-        private Button details;
+        @BindView(R.id.courseLogo) ImageView courseLogo;
+        @BindView(R.id.nameOfCourse) TextView nameOfCourse;
+        @BindView(R.id.details) Button details;
 
         public CourseListViewHolder(View itemView) {
             super(itemView);
-            courseLogo = itemView.findViewById(R.id.courseLogo);
-            nameOfCourse = itemView.findViewById(R.id.nameOfCourse);
-            details = itemView.findViewById(R.id.details);
+            ButterKnife.bind(this, itemView);
         }
     }
 

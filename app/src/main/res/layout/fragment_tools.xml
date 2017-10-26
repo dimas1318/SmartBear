@@ -4,28 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RadioGroup
-            android:id="@+id/radio_group_languages"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RadioButton
-                android:id="@+id/radio_btn_eng_language"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/english" />
-
-            <RadioButton
-                android:id="@+id/radio_btn_rus_language"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/russian" />
-
-        </RadioGroup>
-    </LinearLayout>
 </FrameLayout>

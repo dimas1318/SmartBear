@@ -10,8 +10,7 @@
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        />
+        android:layout_marginRight="16dp" />
 
     <TextView
         android:id="@+id/nameOfCourse"
@@ -21,8 +20,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center_horizontal|center_vertical"
-        android:textColor="#f3aa40"
-        />
+        android:textColor="#f3aa40" />
 
     <Button
         android:id="@+id/details"
@@ -30,12 +28,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:text="Подробнее о курсе"
+        android:text="@string/course_details"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/round_button"
-        android:clickable="true"
-        />
+        android:clickable="true" />
 
     <View
         android:layout_width="wrap_content"

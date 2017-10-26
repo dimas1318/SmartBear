@@ -1,4 +1,4 @@
-package com.example.android.smartbear.courses;
+package com.example.android.smartbear.courses.fragment;
 
 /**
  * Created by Samsung on 26.10.2017.
