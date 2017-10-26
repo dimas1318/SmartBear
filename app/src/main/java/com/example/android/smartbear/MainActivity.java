@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.android.smartbear.courses.fragment.CourseFragment;
+import com.example.android.smartbear.courses.view.CourseFragment;
 import com.example.android.smartbear.session.SessionManager;
 import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.tools.ToolsFragment;

@@ -1,4 +1,4 @@
-package com.example.android.smartbear.courses.fragment;
+package com.example.android.smartbear.courses.view;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,18 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.smartbear.R;
+import com.example.android.smartbear.courses.data.CourseListCache;
+import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.view.adapter.CourseListAdapter;
 
 /**
  * Created by parsh on 12.10.2017.
  */
 
 public class CourseFragment extends android.support.v4.app.Fragment {
-
     public CourseFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_course, container, false);
+
         //проверка работоспособности
         if (CourseListCache.getInstance().getCourseList().isEmpty()) {
             CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Какой то курс"));
@@ -30,6 +33,7 @@ public class CourseFragment extends android.support.v4.app.Fragment {
             CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Неинтересный курс jsdvnsdjkn sk vnsdknv d vsdksdnklsd fv"));
         }
         //конец проверки
+
         createAdapterForCourseList(v);
         return v;
     }

@@ -1,4 +1,4 @@
-package com.example.android.smartbear.courses.course_details;
+package com.example.android.smartbear.course_details;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
