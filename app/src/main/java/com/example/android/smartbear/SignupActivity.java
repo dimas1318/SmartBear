@@ -19,7 +19,7 @@ import com.example.android.smartbear.validator.exception.NotValidDataException;
 import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -31,14 +31,22 @@ public class SignupActivity extends AppCompatActivity {
 
     private SessionManager session;
 
-    @Bind(R.id.input_name) EditText nameText;
-    @Bind(R.id.input_address) EditText addressText;
-    @Bind(R.id.input_email) EditText emailText;
-    @Bind(R.id.input_mobile) EditText mobileText;
-    @Bind(R.id.input_password) EditText passwordText;
-    @Bind(R.id.input_reEnterPassword) EditText reEnterPasswordText;
-    @Bind(R.id.btn_signup) Button signupButton;
-    @Bind(R.id.link_login) TextView loginLink;
+    @BindView(R.id.input_name)
+    EditText nameText;
+    @BindView(R.id.input_address)
+    EditText addressText;
+    @BindView(R.id.input_email)
+    EditText emailText;
+    @BindView(R.id.input_mobile)
+    EditText mobileText;
+    @BindView(R.id.input_password)
+    EditText passwordText;
+    @BindView(R.id.input_reEnterPassword)
+    EditText reEnterPasswordText;
+    @BindView(R.id.btn_signup)
+    Button signupButton;
+    @BindView(R.id.link_login)
+    TextView loginLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

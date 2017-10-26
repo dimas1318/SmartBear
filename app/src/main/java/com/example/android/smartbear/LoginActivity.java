@@ -17,7 +17,7 @@ import com.example.android.smartbear.validator.UserDataValidator;
 import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -30,10 +30,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private SessionManager session;
 
-    @Bind(R.id.input_email) EditText emailText;
-    @Bind(R.id.input_password) EditText passwordText;
-    @Bind(R.id.btn_login) Button loginButton;
-    @Bind(R.id.link_signup) TextView signupLink;
+    @BindView(R.id.input_email)
+    EditText emailText;
+    @BindView(R.id.input_password)
+    EditText passwordText;
+    @BindView(R.id.btn_login)
+    Button loginButton;
+    @BindView(R.id.link_signup)
+    TextView signupLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

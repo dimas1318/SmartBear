@@ -5,8 +5,9 @@
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
     <string name="action_settings" translatable="false">Settings</string>
-    <string name="logout_user" translatable="false">Log Out</string>
+    <string name="logout_user">Log Out</string>
     <string name="text_line_courses">Courses</string>
     <string name="text_line_tools">Tools</string>
     <string name="english">English</string>
+    <string name="russian">Russian</string>
 </resources>
