@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity
 
     SessionManager session;
 
+    private CourseFragment courseFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +71,14 @@ public class MainActivity extends AppCompatActivity
 
         drawer.setDrawerListener(toggle);
 
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.main_container, new CourseFragment());
-        fragmentTransaction.commit();
+        if (savedInstanceState == null) {
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            courseFragment = new CourseFragment();
+            fragmentTransaction.add(R.id.main_container, courseFragment);
+            fragmentTransaction.commit();
+        } else {
+            courseFragment = (CourseFragment) getSupportFragmentManager().findFragmentById(R.id.main_container);
+        }
     }
 
     @Override
