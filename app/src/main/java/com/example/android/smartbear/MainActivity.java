@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity
 
     SessionManager session;
 
-    private CourseFragment courseFragment;
+    private FeedPagerFragment courseTabFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +73,11 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            courseFragment = new CourseFragment();
-            fragmentTransaction.add(R.id.main_container, courseFragment);
+            courseTabFragment = new FeedPagerFragment();
+            fragmentTransaction.add(R.id.main_container, courseTabFragment);
             fragmentTransaction.commit();
         } else {
-            courseFragment = (CourseFragment) getSupportFragmentManager().findFragmentById(R.id.main_container);
+            courseTabFragment = (FeedPagerFragment) getSupportFragmentManager().findFragmentById(R.id.main_container);
         }
     }
 
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_courses_list) {
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_container, new CourseFragment());
+            fragmentTransaction.replace(R.id.main_container, FeedPagerFragment.newInstance());
             fragmentTransaction.commit();
         } else if (id == R.id.nav_tools) {
             fragmentTransaction = getSupportFragmentManager().beginTransaction();

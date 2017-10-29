@@ -1,6 +1,7 @@
 package com.example.android.smartbear.courses.view;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,8 +17,10 @@ import com.example.android.smartbear.courses.view.adapter.CourseListAdapter;
  * Created by parsh on 12.10.2017.
  */
 
-public class CourseFragment extends android.support.v4.app.Fragment {
-    public CourseFragment() {}
+public class CourseFragment extends Fragment {
+    public static CourseFragment newInstance() {
+        return new CourseFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
