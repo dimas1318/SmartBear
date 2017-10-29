@@ -1,4 +1,4 @@
-package com.example.android.smartbear.courses.view.holder;
+package com.example.android.smartbear.courses.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

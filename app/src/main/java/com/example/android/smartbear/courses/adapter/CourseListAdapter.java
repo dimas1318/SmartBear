@@ -1,4 +1,4 @@
-package com.example.android.smartbear.courses.view.adapter;
+package com.example.android.smartbear.courses.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_details.CourseDetailsFragment;
 import com.example.android.smartbear.courses.data.CourseListItem;
-import com.example.android.smartbear.courses.view.holder.CourseListViewHolder;
+import com.example.android.smartbear.courses.holder.CourseListViewHolder;
 
 import java.util.List;
 
@@ -22,8 +22,7 @@ public class CourseListAdapter extends RecyclerView.Adapter implements View.OnCl
     private List<CourseListItem> courseList;
     private FragmentManager fragmentManager;
 
-    public CourseListAdapter(List<CourseListItem> courseList, FragmentManager fragmentManager) {
-        this.courseList = courseList;
+    public CourseListAdapter(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
@@ -54,5 +53,10 @@ public class CourseListAdapter extends RecyclerView.Adapter implements View.OnCl
                 .addToBackStack(null)
                 .replace(R.id.main_container, fragment)
                 .commit();
+    }
+
+    public void set(List<CourseListItem> courses) {
+        courseList = courses;
+        notifyDataSetChanged();
     }
 }

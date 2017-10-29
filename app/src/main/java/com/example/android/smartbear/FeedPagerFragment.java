@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.android.smartbear.course_all.AllCoursesFragment;
-import com.example.android.smartbear.courses.view.CourseFragment;
+import com.example.android.smartbear.courses.view.fragment.AllCoursesFragment;
+import com.example.android.smartbear.courses.view.fragment.CourseFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

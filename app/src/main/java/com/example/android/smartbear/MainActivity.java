@@ -13,18 +13,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.android.smartbear.courses.view.CourseFragment;
 import com.example.android.smartbear.session.SessionManager;
 import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.tools.ToolsFragment;
 import com.example.android.smartbear.user.UserModel;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    DrawerLayout drawer;
-    Toolbar toolbar;
-    ActionBarDrawerToggle toggle;
+
+    @BindView(R.id.nav_view)
     NavigationView navigationView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    ActionBarDrawerToggle toggle;
     FragmentTransaction fragmentTransaction;
 
     SessionManager session;
@@ -35,6 +42,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         session = new SessionManagerImpl(getApplicationContext());
 
@@ -47,7 +55,6 @@ public class MainActivity extends AppCompatActivity
         String userEmail = user.getEmail();
         Boolean userIsAdmin = user.isAdmin();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header_main);
@@ -61,10 +68,7 @@ public class MainActivity extends AppCompatActivity
         TextView emailInHeader = navHeaderView.findViewById(R.id.email_in_nav_header);
         emailInHeader.setText(userEmail);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
