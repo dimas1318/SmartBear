@@ -18,6 +18,7 @@ import com.example.android.smartbear.courses.adapter.CourseListAdapter;
 import com.example.android.smartbear.courses.data.CourseListItem;
 import com.example.android.smartbear.courses.presenter.CoursePresenter;
 import com.example.android.smartbear.courses.view.CourseView;
+import com.example.android.smartbear.database.CourseManagerImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +54,7 @@ public class AllCoursesFragment extends Fragment implements CourseView {
 
         //проверка работоспособности
         courses = new ArrayList<>();
-        courses.add(new CourseListItem(R.drawable.logo, "Какой то курс Лехи"));
-        courses.add(new CourseListItem(R.drawable.logo, "Еще какой то курс Лехи"));
-        courses.add(new CourseListItem(R.drawable.logo, "Очередной курс Лехи"));
+        courses = new CourseManagerImpl().getAllCourses();
         //конец проверки
 
         return view;

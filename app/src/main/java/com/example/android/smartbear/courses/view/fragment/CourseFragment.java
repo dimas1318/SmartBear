@@ -19,6 +19,7 @@ import com.example.android.smartbear.courses.data.CourseListCache;
 import com.example.android.smartbear.courses.data.CourseListItem;
 import com.example.android.smartbear.courses.adapter.CourseListAdapter;
 import com.example.android.smartbear.courses.view.CourseView;
+import com.example.android.smartbear.database.CourseManagerImpl;
 
 import java.util.List;
 
@@ -52,12 +53,7 @@ public class CourseFragment extends Fragment implements CourseView {
 
         //проверка работоспособности
         if (CourseListCache.getInstance().getCourseList().isEmpty()) {
-            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Какой то курс"));
-            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Еще какой то курс"));
-            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Очередной курс"));
-            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Очередной курс"));
-            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Интересный курс"));
-            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Неинтересный курс jsdvnsdjkn sk vnsdknv d vsdksdnklsd fv"));
+            new CourseManagerImpl().getUserCourses();
         }
         //конец проверки
 
