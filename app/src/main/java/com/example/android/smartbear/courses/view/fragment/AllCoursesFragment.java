@@ -14,13 +14,11 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import com.example.android.smartbear.R;
-import com.example.android.smartbear.courses.adapter.CourseListAdapter;
+import com.example.android.smartbear.courses.adapter.AllCourseListAdapter;
 import com.example.android.smartbear.courses.data.CourseListItem;
-import com.example.android.smartbear.courses.presenter.CoursePresenter;
+import com.example.android.smartbear.courses.presenter.AllCoursesPresenter;
 import com.example.android.smartbear.courses.view.CourseView;
-import com.example.android.smartbear.database.CourseManagerImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,8 +35,8 @@ public class AllCoursesFragment extends Fragment implements CourseView {
 
     private List<CourseListItem> courses;
 
-    private CoursePresenter presenter;
-    private CourseListAdapter adapter;
+    private AllCoursesPresenter presenter;
+    private AllCourseListAdapter adapter;
 
     public static AllCoursesFragment newInstance() {
         return new AllCoursesFragment();
@@ -50,12 +48,7 @@ public class AllCoursesFragment extends Fragment implements CourseView {
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
 
-        presenter = new CoursePresenter();
-
-        //проверка работоспособности
-        courses = new ArrayList<>();
-        courses = new CourseManagerImpl().getAllCourses();
-        //конец проверки
+        presenter = new AllCoursesPresenter();
 
         return view;
     }
@@ -65,7 +58,9 @@ public class AllCoursesFragment extends Fragment implements CourseView {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
-        initView();
+        if (savedInstanceState == null) {
+            initView();
+        }
     }
 
     @Override
@@ -100,11 +95,10 @@ public class AllCoursesFragment extends Fragment implements CourseView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new CourseListAdapter(getActivity().getSupportFragmentManager());
-        adapter.set(courses);
+        adapter = new AllCourseListAdapter(getActivity().getSupportFragmentManager());
+        adapter.set(presenter.getCourses());
         recyclerView.setAdapter(adapter);
 
         presenter.setView(this);
-        presenter.setCourses(courses);
     }
 }

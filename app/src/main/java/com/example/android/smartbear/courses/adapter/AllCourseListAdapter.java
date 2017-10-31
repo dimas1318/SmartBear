@@ -10,32 +10,33 @@ import android.view.ViewGroup;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_details.CourseDetailsFragment;
 import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.holder.AllCourseListViewHolder;
 import com.example.android.smartbear.courses.holder.CourseListViewHolder;
 
 import java.util.List;
 
 /**
- * Created by Samsung on 26.10.2017.
+ * Created by parsh on 01.11.2017.
  */
 
-public class CourseListAdapter extends RecyclerView.Adapter implements View.OnClickListener {
+public class AllCourseListAdapter extends RecyclerView.Adapter implements View.OnClickListener {
     private List<CourseListItem> courseList;
     private FragmentManager fragmentManager;
 
-    public CourseListAdapter(FragmentManager fragmentManager) {
+    public AllCourseListAdapter(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
     @Override
-    public CourseListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_course_item, parent, false);
-        return new CourseListViewHolder(v);
+    public AllCourseListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_all_courses_item, parent, false);
+        return new AllCourseListViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((CourseListViewHolder) holder).courseLogo.setImageResource(courseList.get(position).getCourseLogoId());
-        ((CourseListViewHolder) holder).nameOfCourse.setText(courseList.get(position).getCourseName());
+        ((AllCourseListViewHolder) holder).courseLogo.setImageResource(courseList.get(position).getCourseLogoId());
+        ((AllCourseListViewHolder) holder).nameOfCourse.setText(courseList.get(position).getCourseName());
     }
 
     @Override

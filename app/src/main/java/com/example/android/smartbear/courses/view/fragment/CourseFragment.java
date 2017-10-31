@@ -51,12 +51,6 @@ public class CourseFragment extends Fragment implements CourseView {
 
         presenter = new CoursePresenter();
 
-        //проверка работоспособности
-        if (CourseListCache.getInstance().getCourseList().isEmpty()) {
-            new CourseManagerImpl().getUserCourses();
-        }
-        //конец проверки
-
         return view;
     }
 
@@ -65,7 +59,9 @@ public class CourseFragment extends Fragment implements CourseView {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
-        initView();
+        if (savedInstanceState == null) {
+            initView();
+        }
     }
 
     @Override
@@ -101,10 +97,9 @@ public class CourseFragment extends Fragment implements CourseView {
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = new CourseListAdapter(getActivity().getSupportFragmentManager());
-        adapter.set(CourseListCache.getInstance().getCourseList());
+        adapter.set(presenter.getCourses());
         recyclerView.setAdapter(adapter);
 
         presenter.setView(this);
-        presenter.setCourses(CourseListCache.getInstance().getCourseList());
     }
 }
