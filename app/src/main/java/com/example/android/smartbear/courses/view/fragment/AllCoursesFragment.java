@@ -58,9 +58,7 @@ public class AllCoursesFragment extends Fragment implements CourseView {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
-        if (savedInstanceState == null) {
-            initView();
-        }
+        initView();
     }
 
     @Override

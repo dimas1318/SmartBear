@@ -14,12 +14,14 @@ import java.util.List;
 public class CourseManagerImpl implements CourseManager {
     @Override
     public List<CourseListItem> getUserCourses() {
-        CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Какой то курс"));
-        CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Еще какой то курс"));
-        CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Очередной курс"));
-        CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Очередной курс"));
-        CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Интересный курс"));
-        CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Неинтересный курс jsdvnsdjkn sk vnsdknv d vsdksdnklsd fv"));
+        if (CourseListCache.getInstance().getCourseList().isEmpty()) {
+            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Какой то курс"));
+            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Еще какой то курс"));
+            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Очередной курс"));
+            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Очередной курс"));
+            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Интересный курс"));
+            CourseListCache.getInstance().getCourseList().add(new CourseListItem(R.drawable.logo, "Неинтересный курс jsdvnsdjkn sk vnsdknv d vsdksdnklsd fv"));
+        }
         return CourseListCache.getInstance().getCourseList();
     }
 

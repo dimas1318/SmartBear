@@ -19,7 +19,7 @@ import java.util.List;
  * Created by parsh on 01.11.2017.
  */
 
-public class AllCourseListAdapter extends RecyclerView.Adapter implements View.OnClickListener {
+public class AllCourseListAdapter extends RecyclerView.Adapter {
     private List<CourseListItem> courseList;
     private FragmentManager fragmentManager;
 
@@ -37,6 +37,12 @@ public class AllCourseListAdapter extends RecyclerView.Adapter implements View.O
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ((AllCourseListViewHolder) holder).courseLogo.setImageResource(courseList.get(position).getCourseLogoId());
         ((AllCourseListViewHolder) holder).nameOfCourse.setText(courseList.get(position).getCourseName());
+        ((AllCourseListViewHolder) holder).details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCourseDetails();
+            }
+        });
     }
 
     @Override
@@ -44,8 +50,7 @@ public class AllCourseListAdapter extends RecyclerView.Adapter implements View.O
         return courseList.size();
     }
 
-    @Override
-    public void onClick(View view) {
+    public void showCourseDetails() {
         FragmentManager fm = fragmentManager;
         Fragment fragment = new CourseDetailsFragment();
         fm

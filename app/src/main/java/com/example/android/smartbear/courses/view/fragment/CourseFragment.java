@@ -49,7 +49,9 @@ public class CourseFragment extends Fragment implements CourseView {
 
         setHasOptionsMenu(true);
 
-        presenter = new CoursePresenter();
+        if (savedInstanceState == null) {
+            presenter = new CoursePresenter();
+        }
 
         return view;
     }
@@ -59,9 +61,7 @@ public class CourseFragment extends Fragment implements CourseView {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
-        if (savedInstanceState == null) {
-            initView();
-        }
+        initView();
     }
 
     @Override
