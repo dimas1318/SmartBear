@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.courses.presenter.CoursePresenter;
@@ -34,6 +35,8 @@ public class CourseFragment extends Fragment implements CourseView {
 
     @BindView(R.id.rv)
     RecyclerView recyclerView;
+    @BindView(R.id.no_courses_tv)
+    TextView noCoursesTextView;
 
     private CoursePresenter presenter;
     private CourseListAdapter adapter;
@@ -97,7 +100,13 @@ public class CourseFragment extends Fragment implements CourseView {
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = new CourseListAdapter(getActivity().getSupportFragmentManager());
-        adapter.set(presenter.getCourses());
+        List<CourseListItem> courseList = presenter.getCourses();
+        if (courseList == null || courseList.isEmpty()) {
+            noCoursesTextView.setVisibility(View.VISIBLE);
+        } else {
+            noCoursesTextView.setVisibility(View.GONE);
+        }
+        adapter.set(courseList);
         recyclerView.setAdapter(adapter);
 
         presenter.setView(this);

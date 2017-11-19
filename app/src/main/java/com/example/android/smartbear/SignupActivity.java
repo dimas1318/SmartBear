@@ -211,7 +211,7 @@ public class SignupActivity extends AppCompatActivity {
             UserDataValidator.validatePassword(password);
             passwordText.setError(null);
         } catch (TooShortTextException | TooLongTextException e) {
-            passwordText.setError("between 4 and 10 alphanumeric characters");
+            passwordText.setError("between 4 and 20 alphanumeric characters");
             valid = false;
         }
 
@@ -222,7 +222,7 @@ public class SignupActivity extends AppCompatActivity {
             reEnterPasswordText.setError("Password Do not match");
             valid = false;
         } catch (TooShortTextException | TooLongTextException e) {
-            reEnterPasswordText.setError("between 4 and 10 alphanumeric characters");
+            reEnterPasswordText.setError("between 4 and 20 alphanumeric characters");
             valid = false;
         }
 

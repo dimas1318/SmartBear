@@ -55,12 +55,15 @@ public class LoginActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        emailText.setText("parshin@phystech.edu");
+        passwordText.setText("12345x_x_*xYYY");
+
         session = new SessionManagerImpl(getApplicationContext());
     }
 
     @OnClick(R.id.btn_login)
     public void loginButtonClick() {
-        signIn(emailText.getText().toString(), passwordText.getText().toString());
+//        signIn(emailText.getText().toString(), passwordText.getText().toString());
         login();
     }
 
@@ -72,15 +75,16 @@ public class LoginActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
-    public void signIn(String email, String password) {
+    public void signIn(final String email, final String password) {
         auth = FirebaseAuth.getInstance();
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(LoginActivity.this, "Authorization completed successfully", Toast.LENGTH_LONG).show();
+                    session.createUserSession(email, password, email, false);
+                    onLoginSuccess();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Authorization failed", Toast.LENGTH_LONG).show();
+                    onLoginFailed();
                 }
             }
         });
@@ -102,8 +106,8 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
+        final String email = emailText.getText().toString();
+        final String password = passwordText.getText().toString();
 
         if (email.equals("admin") && password.equals("admin")) {
            session.createUserSession(email, password, "Admin", true);
@@ -120,13 +124,15 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }, 3000);
         } else {
-            new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                    onLoginFailed();
-                    progressDialog.dismiss();
-                    }
-                }, 3000);
+            signIn(email, password);
+            progressDialog.dismiss();
+//            new android.os.Handler().postDelayed(
+//                new Runnable() {
+//                    public void run() {
+//                    signIn(email, password);
+//                    progressDialog.dismiss();
+//                    }
+//                }, 5000);
         }
     }
 
@@ -187,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
             UserDataValidator.validatePassword(password);
             passwordText.setError(null);
         } catch (TooShortTextException | TooLongTextException e) {
-            passwordText.setError("between 4 and 10 alphanumeric characters");
+            passwordText.setError("between 4 and 20 alphanumeric characters");
             valid = false;
         }
 

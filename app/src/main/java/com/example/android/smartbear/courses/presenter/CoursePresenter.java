@@ -2,6 +2,8 @@ package com.example.android.smartbear.courses.presenter;
 
 import com.example.android.smartbear.courses.view.CourseView;
 import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.database.CourseManager;
+import com.example.android.smartbear.database.CourseManagerFirebase;
 import com.example.android.smartbear.database.CourseManagerImpl;
 
 import java.util.ArrayList;
@@ -17,7 +19,8 @@ public class CoursePresenter {
     private CourseView view;
 
     public CoursePresenter() {
-        courses = new CourseManagerImpl().getUserCourses();
+        CourseManager courseManager = new CourseManagerFirebase();
+        courses = courseManager.getUserCourses();
     }
 
     public void requestSearch(String template) {
