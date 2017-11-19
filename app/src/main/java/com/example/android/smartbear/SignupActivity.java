@@ -3,6 +3,7 @@ package com.example.android.smartbear;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,13 @@ import com.example.android.smartbear.validator.UserDataValidator;
 import com.example.android.smartbear.validator.exception.NotValidDataException;
 import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +38,9 @@ public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
     private SessionManager session;
+
+    private FirebaseAuth auth;
+
 
     @BindView(R.id.input_name)
     EditText nameText;
@@ -58,15 +69,18 @@ public class SignupActivity extends AppCompatActivity {
 
         nameText.setText("Dima");
         addressText.setText("Moscow, MIPT");
-        emailText.setText("parshin@google.com");
+        emailText.setText("parshin@phystech.edu");
         mobileText.setText("9001234567");
-        passwordText.setText("12345");
-        reEnterPasswordText.setText("12345");
+        passwordText.setText("12345x_x_*xYYY");
+        reEnterPasswordText.setText("12345x_x_*xYYY");
+
+        auth = FirebaseAuth.getInstance();
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signup();
+                signUp(emailText.getText().toString(), passwordText.getText().toString());
+//                signup();
             }
         });
 
@@ -79,6 +93,21 @@ public class SignupActivity extends AppCompatActivity {
 
             finish();
             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+            }
+        });
+    }
+
+
+    public void signUp(String email, String password) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(SignupActivity.this, "Registration completed successfully", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SignupActivity.this, "Registration failed", Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
+                }
             }
         });
     }

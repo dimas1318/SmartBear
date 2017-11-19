@@ -3,6 +3,7 @@ package com.example.android.smartbear;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
@@ -15,6 +16,10 @@ import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.validator.UserDataValidator;
 import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +35,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private SessionManager session;
 
+    private FirebaseAuth auth;
+
+
     @BindView(R.id.input_email)
     EditText emailText;
     @BindView(R.id.input_password)
@@ -38,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     @BindView(R.id.link_signup)
     TextView signupLink;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_login)
     public void loginButtonClick() {
+        signIn(emailText.getText().toString(), passwordText.getText().toString());
         login();
     }
 
@@ -60,6 +70,20 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_SIGNUP);
 
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    public void signIn(String email, String password) {
+        auth = FirebaseAuth.getInstance();
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(LoginActivity.this, "Authorization completed successfully", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Authorization failed", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     public void login() {
