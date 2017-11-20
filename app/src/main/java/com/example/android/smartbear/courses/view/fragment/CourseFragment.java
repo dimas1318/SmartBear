@@ -93,6 +93,11 @@ public class CourseFragment extends Fragment implements CourseView {
     @Override
     public void showItemsList(List<CourseListItem> localCourses) {
         adapter.set(localCourses);
+        if (localCourses == null || localCourses.isEmpty()) {
+            noCoursesTextView.setVisibility(View.VISIBLE);
+        } else {
+            noCoursesTextView.setVisibility(View.GONE);
+        }
     }
 
     private void initView() {

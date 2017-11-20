@@ -1,7 +1,10 @@
 package com.example.android.smartbear.courses.presenter;
 
+import android.view.View;
+
 import com.example.android.smartbear.courses.view.CourseView;
 import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.view.fragment.CourseFragment;
 import com.example.android.smartbear.database.CourseManager;
 import com.example.android.smartbear.database.CourseManagerFirebase;
 import com.example.android.smartbear.database.CourseManagerImpl;

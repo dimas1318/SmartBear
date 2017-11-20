@@ -7,25 +7,34 @@ import java.util.List;
  */
 
 public class Lesson {
-    private final String name;
-    private final List<Material> materials;
-    private final int order;
+    private String Name;
+    private List<Material> Materials;
+    private int Order;
 
-    public Lesson(String name, List<Material> materials, int order) {
-        this.name = name;
-        this.materials = materials;
-        this.order = order;
+    public Lesson() {
     }
 
     public String getName() {
-        return name;
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
     }
 
     public List<Material> getMaterials() {
-        return materials;
+        return Materials;
+    }
+
+    public void setMaterials(List<Material> materials) {
+        Materials = materials;
     }
 
     public int getOrder() {
-        return order;
+        return Order;
+    }
+
+    public void setOrder(int order) {
+        Order = order;
     }
 }

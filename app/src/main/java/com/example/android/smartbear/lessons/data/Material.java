@@ -5,25 +5,22 @@ package com.example.android.smartbear.lessons.data;
  */
 
 public class Material {
-    private final String name;
-    private final String type;
-    private final String reference;
+    private String Name;
+    private String Type;
+    private String Reference;
 
-    public Material(String name, String type, String reference) {
-        this.name = name;
-        this.type = type;
-        this.reference = reference;
+    public Material() {
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public String getType() {
-        return type;
+        return Type;
     }
 
     public String getReference() {
-        return reference;
+        return Reference;
     }
 }
