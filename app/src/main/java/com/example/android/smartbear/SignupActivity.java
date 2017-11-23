@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.smartbear.database.DataBaseManager;
+import com.example.android.smartbear.database.DatabaseManagerFirebase;
 import com.example.android.smartbear.session.SessionManager;
 import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.validator.UserDataValidator;
@@ -79,8 +80,14 @@ public class SignupActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signUp(emailText.getText().toString(), passwordText.getText().toString());
-//                signup();
+                String name = nameText.getText().toString();
+                String address = addressText.getText().toString();
+                String email = emailText.getText().toString();
+                String mobile = mobileText.getText().toString();
+                String password = passwordText.getText().toString();
+                String reEnterPassword = reEnterPasswordText.getText().toString();
+
+                signUp(email, password, name);
             }
         });
 
@@ -98,23 +105,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    public void signUp(String email, String password) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(SignupActivity.this, "Registration completed successfully", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SignupActivity.this, "Registration failed", Toast.LENGTH_LONG).show();
-                    Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
-                }
-            }
-        });
-    }
-
-    public void signup() {
-        Log.d(TAG, "Signup");
-
+    public void signUp(final String email, final String password, final String name) {
         if (!validate()) {
             onSignupFailed();
             return;
@@ -128,30 +119,24 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = nameText.getText().toString();
-        String address = addressText.getText().toString();
-        String email = emailText.getText().toString();
-        String mobile = mobileText.getText().toString();
-        String password = passwordText.getText().toString();
-        String reEnterPassword = reEnterPasswordText.getText().toString();
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    DatabaseManagerFirebase.saveUser();
 
-        DataBaseManager.saveDataIntoBase(name, address, email, mobile, password, reEnterPassword);
+                    session.createUserSession(email, password, name, false);
 
-        session.createUserSession(email, password, name, false);
-        // TODO: Implement your own signup logic here.
-
-        new android.os.Handler().postDelayed(
-            new Runnable() {
-                public void run() {
-                    // On complete call either onSignupSuccess or onSignupFailed
-                    // depending on success
                     onSignupSuccess();
-                    // onSignupFailed();
+                    progressDialog.dismiss();
+                } else {
+                    Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
+                    onSignupFailed();
                     progressDialog.dismiss();
                 }
-            }, 3000);
+            }
+        });
     }
-
 
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
