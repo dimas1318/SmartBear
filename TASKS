@@ -1,7 +1,8 @@
 TO-DO
-1) Merge classes Course and CourseListItem
-2) Remove delay in "CourseManagerFirebase" class
-3) Fix "getUserCourses()" method in "CourseManagerFirebase" class
+1) Merge classes Course and CourseListItem (***Alexey***)
+2) Remove delay in "CourseManagerFirebase" class (***Alexey***)
+3) Fix "getUserCourses()" method in "CourseManagerFirebase" class (***Alexey***)
+4) add Navigator class (***Dmitry***)
 
 IN PROGRESS
 
