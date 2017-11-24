@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.commit();
         } else if (id == R.id.nav_tools) {
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_container, new ToolsFragment());
+            fragmentTransaction.replace(R.id.main_container, ToolsFragment.newInstance());
             fragmentTransaction.commit();
         }
 

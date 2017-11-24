@@ -42,7 +42,12 @@ public class AllCoursesFragment extends Fragment implements CourseView {
     private AllCourseListAdapter adapter;
 
     public static AllCoursesFragment newInstance() {
-        return new AllCoursesFragment();
+        AllCoursesFragment fragment = new AllCoursesFragment();
+
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
