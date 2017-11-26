@@ -3,6 +3,7 @@ TO-DO
 2) Remove delay in "CourseManagerFirebase" class (***Alexey***)
 3) Fix "getUserCourses()" method in "CourseManagerFirebase" class (***Alexey***)
 4) add Navigator class (***Dmitry***)
+5) add MaterialFragment class (***Dmitry***)
 
 IN PROGRESS
 
