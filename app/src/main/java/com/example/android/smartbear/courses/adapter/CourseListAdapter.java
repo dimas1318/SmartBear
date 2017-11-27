@@ -11,6 +11,7 @@ import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_details.CourseDetailsFragment;
 import com.example.android.smartbear.courses.data.CourseListItem;
 import com.example.android.smartbear.courses.holder.CourseListViewHolder;
+import com.example.android.smartbear.materials.MaterialFragment;
 
 import java.util.List;
 
@@ -49,6 +50,19 @@ public class CourseListAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 deleteCourseFromList(position);
+            }
+        });
+
+        ((CourseListViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = fragmentManager;
+                MaterialFragment fragment = MaterialFragment.newInstance(courseList.get(position));
+                fm
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.main_container, fragment)
+                        .commit();
             }
         });
     }
