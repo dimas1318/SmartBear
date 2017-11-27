@@ -29,7 +29,7 @@ public class AllCoursesPresenter {
             }
         }
 
-        view.showItemsList(localCourses);
+        view.refreshData(localCourses);
     }
 
     private boolean isTargetStartsWithTemplate(String template, String target) {

@@ -17,6 +17,8 @@ import com.example.android.smartbear.session.SessionManager;
 import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.tools.ToolsFragment;
 import com.example.android.smartbear.user.UserModel;
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity
     SessionManager session;
 
     private FeedPagerFragment courseTabFragment;
+
+    public static Bus bus = new Bus();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
