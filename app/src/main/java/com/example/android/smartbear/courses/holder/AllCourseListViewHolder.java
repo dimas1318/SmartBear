@@ -12,20 +12,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by parsh on 27.10.2017.
+ * Created by parsh on 01.11.2017.
  */
 
-public class CourseListViewHolder extends RecyclerView.ViewHolder {
+public class AllCourseListViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.courseLogo)
     public ImageView courseLogo;
     @BindView(R.id.nameOfCourse)
     public TextView nameOfCourse;
     @BindView(R.id.details)
     public Button details;
-    @BindView(R.id.btn_delete_course)
-    public Button deleteCourseButton;
+    @BindView(R.id.btn_add_course)
+    public Button addCourseButton;
 
-    public CourseListViewHolder(View itemView) {
+    public AllCourseListViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }

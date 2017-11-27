@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.courses.presenter.CoursePresenter;
@@ -34,12 +35,19 @@ public class CourseFragment extends Fragment implements CourseView {
 
     @BindView(R.id.rv)
     RecyclerView recyclerView;
+    @BindView(R.id.no_courses_tv)
+    TextView noCoursesTextView;
 
     private CoursePresenter presenter;
     private CourseListAdapter adapter;
 
     public static CourseFragment newInstance() {
-        return new CourseFragment();
+        CourseFragment fragment = new CourseFragment();
+
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
@@ -49,13 +57,9 @@ public class CourseFragment extends Fragment implements CourseView {
 
         setHasOptionsMenu(true);
 
-        presenter = new CoursePresenter();
-
-        //проверка работоспособности
-        if (CourseListCache.getInstance().getCourseList().isEmpty()) {
-            new CourseManagerImpl().getUserCourses();
+        if (savedInstanceState == null) {
+            presenter = new CoursePresenter();
         }
-        //конец проверки
 
         return view;
     }
@@ -94,6 +98,11 @@ public class CourseFragment extends Fragment implements CourseView {
     @Override
     public void showItemsList(List<CourseListItem> localCourses) {
         adapter.set(localCourses);
+        if (localCourses == null || localCourses.isEmpty()) {
+            noCoursesTextView.setVisibility(View.VISIBLE);
+        } else {
+            noCoursesTextView.setVisibility(View.GONE);
+        }
     }
 
     private void initView() {
@@ -101,10 +110,15 @@ public class CourseFragment extends Fragment implements CourseView {
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = new CourseListAdapter(getActivity().getSupportFragmentManager());
-        adapter.set(CourseListCache.getInstance().getCourseList());
+        List<CourseListItem> courseList = presenter.getCourses();
+        if (courseList == null || courseList.isEmpty()) {
+            noCoursesTextView.setVisibility(View.VISIBLE);
+        } else {
+            noCoursesTextView.setVisibility(View.GONE);
+        }
+        adapter.set(courseList);
         recyclerView.setAdapter(adapter);
 
         presenter.setView(this);
-        presenter.setCourses(CourseListCache.getInstance().getCourseList());
     }
 }

@@ -3,6 +3,7 @@ package com.example.android.smartbear;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,12 +13,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.smartbear.database.DataBaseManager;
+import com.example.android.smartbear.database.DatabaseManagerFirebase;
 import com.example.android.smartbear.session.SessionManager;
 import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.validator.UserDataValidator;
 import com.example.android.smartbear.validator.exception.NotValidDataException;
 import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +39,9 @@ public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
     private SessionManager session;
+
+    private FirebaseAuth auth;
+
 
     @BindView(R.id.input_name)
     EditText nameText;
@@ -58,15 +70,24 @@ public class SignupActivity extends AppCompatActivity {
 
         nameText.setText("Dima");
         addressText.setText("Moscow, MIPT");
-        emailText.setText("parshin@google.com");
+        emailText.setText("parshin@phystech.edu");
         mobileText.setText("9001234567");
-        passwordText.setText("12345");
-        reEnterPasswordText.setText("12345");
+        passwordText.setText("12345x_x_*xYYY");
+        reEnterPasswordText.setText("12345x_x_*xYYY");
+
+        auth = FirebaseAuth.getInstance();
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signup();
+                String name = nameText.getText().toString();
+                String address = addressText.getText().toString();
+                String email = emailText.getText().toString();
+                String mobile = mobileText.getText().toString();
+                String password = passwordText.getText().toString();
+                String reEnterPassword = reEnterPasswordText.getText().toString();
+
+                signUp(email, password, name);
             }
         });
 
@@ -83,9 +104,8 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    public void signup() {
-        Log.d(TAG, "Signup");
 
+    public void signUp(final String email, final String password, final String name) {
         if (!validate()) {
             onSignupFailed();
             return;
@@ -99,30 +119,24 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = nameText.getText().toString();
-        String address = addressText.getText().toString();
-        String email = emailText.getText().toString();
-        String mobile = mobileText.getText().toString();
-        String password = passwordText.getText().toString();
-        String reEnterPassword = reEnterPasswordText.getText().toString();
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    DatabaseManagerFirebase.saveUser();
 
-        DataBaseManager.saveDataIntoBase(name, address, email, mobile, password, reEnterPassword);
+                    session.createUserSession(email, password, name, false);
 
-        session.createUserSession(email, password, name, false);
-        // TODO: Implement your own signup logic here.
-
-        new android.os.Handler().postDelayed(
-            new Runnable() {
-                public void run() {
-                    // On complete call either onSignupSuccess or onSignupFailed
-                    // depending on success
                     onSignupSuccess();
-                    // onSignupFailed();
+                    progressDialog.dismiss();
+                } else {
+                    Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
+                    onSignupFailed();
                     progressDialog.dismiss();
                 }
-            }, 3000);
+            }
+        });
     }
-
 
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
@@ -182,7 +196,7 @@ public class SignupActivity extends AppCompatActivity {
             UserDataValidator.validatePassword(password);
             passwordText.setError(null);
         } catch (TooShortTextException | TooLongTextException e) {
-            passwordText.setError("between 4 and 10 alphanumeric characters");
+            passwordText.setError("between 4 and 20 alphanumeric characters");
             valid = false;
         }
 
@@ -193,7 +207,7 @@ public class SignupActivity extends AppCompatActivity {
             reEnterPasswordText.setError("Password Do not match");
             valid = false;
         } catch (TooShortTextException | TooLongTextException e) {
-            reEnterPasswordText.setError("between 4 and 10 alphanumeric characters");
+            reEnterPasswordText.setError("between 4 and 20 alphanumeric characters");
             valid = false;
         }
 

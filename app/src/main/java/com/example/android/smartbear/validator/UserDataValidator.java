@@ -38,7 +38,7 @@ public class UserDataValidator {
     public static void validatePassword(String password) throws TooShortTextException, TooLongTextException {
         if (password.isEmpty() || password.length() < 4) {
             throw new TooShortTextException();
-        } else if (password.length() > 10) {
+        } else if (password.length() > 20) {
             throw new TooLongTextException();
         }
     }
@@ -49,7 +49,7 @@ public class UserDataValidator {
         } else {
             if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4) {
                 throw new TooShortTextException();
-            } else if (reEnterPassword.length() > 10) {
+            } else if (reEnterPassword.length() > 20) {
                 throw new TooLongTextException();
             }
         }

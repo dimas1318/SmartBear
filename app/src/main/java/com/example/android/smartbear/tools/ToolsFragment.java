@@ -21,7 +21,15 @@ import butterknife.ButterKnife;
  */
 
 public class ToolsFragment extends android.support.v4.app.Fragment {
-    public ToolsFragment() {}
+
+    public static ToolsFragment newInstance() {
+        ToolsFragment fragment = new ToolsFragment();
+
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override

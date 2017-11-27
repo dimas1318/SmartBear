@@ -28,7 +28,12 @@ public class FeedPagerFragment extends Fragment {
     private FeedPagerAdapter adapter;
 
     public static FeedPagerFragment newInstance() {
-        return new FeedPagerFragment();
+        FeedPagerFragment fragment = new FeedPagerFragment();
+
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Nullable

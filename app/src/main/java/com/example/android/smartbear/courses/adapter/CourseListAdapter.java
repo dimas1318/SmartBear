@@ -14,11 +14,14 @@ import com.example.android.smartbear.courses.holder.CourseListViewHolder;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+
 /**
  * Created by Samsung on 26.10.2017.
  */
 
-public class CourseListAdapter extends RecyclerView.Adapter implements View.OnClickListener {
+public class CourseListAdapter extends RecyclerView.Adapter {
     private List<CourseListItem> courseList;
     private FragmentManager fragmentManager;
 
@@ -33,19 +36,33 @@ public class CourseListAdapter extends RecyclerView.Adapter implements View.OnCl
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ((CourseListViewHolder) holder).courseLogo.setImageResource(courseList.get(position).getCourseLogoId());
         ((CourseListViewHolder) holder).nameOfCourse.setText(courseList.get(position).getCourseName());
-        ((CourseListViewHolder) holder).details.setOnClickListener(this);
+        ((CourseListViewHolder) holder).details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCourseDetails();
+            }
+        });
+        ((CourseListViewHolder) holder).deleteCourseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCourseFromList(position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return courseList.size();
+        if (courseList == null) {
+            return 0;
+        } else {
+            return courseList.size();
+        }
     }
 
-    @Override
-    public void onClick(View view) {
+    private void showCourseDetails() {
         FragmentManager fm = fragmentManager;
         Fragment fragment = new CourseDetailsFragment();
         fm
@@ -53,6 +70,12 @@ public class CourseListAdapter extends RecyclerView.Adapter implements View.OnCl
                 .addToBackStack(null)
                 .replace(R.id.main_container, fragment)
                 .commit();
+    }
+
+    private void deleteCourseFromList(int position) {
+        courseList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, courseList.size());
     }
 
     public void set(List<CourseListItem> courses) {

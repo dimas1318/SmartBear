@@ -1,11 +1,17 @@
 TO-DO
-1) Firebase registration
-4) "delete" button in each item from my courses
-5) "add" button in each item from all courses
-6) adding courses to my courses pool
+1) Merge classes Course and CourseListItem (***Alexey***)
+2) Remove delay in "CourseManagerFirebase" class (***Alexey***)
+3) Fix "getUserCourses()" method in "CourseManagerFirebase" class (***Alexey***)
+4) add Navigator class (***Dmitry***)
+5) add MaterialFragment class (***Dmitry***)
 
 IN PROGRESS
 
 ON REVIEW
+1) Firebase registration
 2) column separation
 3) search of courses
+4) "delete" button in each item from my courses
+5) "add" button in each item from all courses
+6) adding courses to my courses pool
+7) synchronization of adding user in database and in authenticated ones pool

@@ -12,15 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.android.smartbear.R;
-import com.example.android.smartbear.courses.adapter.CourseListAdapter;
+import com.example.android.smartbear.courses.adapter.AllCourseListAdapter;
 import com.example.android.smartbear.courses.data.CourseListItem;
-import com.example.android.smartbear.courses.presenter.CoursePresenter;
+import com.example.android.smartbear.courses.presenter.AllCoursesPresenter;
 import com.example.android.smartbear.courses.view.CourseView;
-import com.example.android.smartbear.database.CourseManagerImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,14 +33,21 @@ public class AllCoursesFragment extends Fragment implements CourseView {
 
     @BindView(R.id.rv)
     RecyclerView recyclerView;
+    @BindView(R.id.no_courses_tv)
+    TextView noCoursesTextView;
 
     private List<CourseListItem> courses;
 
-    private CoursePresenter presenter;
-    private CourseListAdapter adapter;
+    private AllCoursesPresenter presenter;
+    private AllCourseListAdapter adapter;
 
     public static AllCoursesFragment newInstance() {
-        return new AllCoursesFragment();
+        AllCoursesFragment fragment = new AllCoursesFragment();
+
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
@@ -50,12 +56,7 @@ public class AllCoursesFragment extends Fragment implements CourseView {
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
 
-        presenter = new CoursePresenter();
-
-        //проверка работоспособности
-        courses = new ArrayList<>();
-        courses = new CourseManagerImpl().getAllCourses();
-        //конец проверки
+        presenter = new AllCoursesPresenter();
 
         return view;
     }
@@ -100,11 +101,16 @@ public class AllCoursesFragment extends Fragment implements CourseView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new CourseListAdapter(getActivity().getSupportFragmentManager());
-        adapter.set(courses);
+        adapter = new AllCourseListAdapter(getActivity().getSupportFragmentManager());
+        List<CourseListItem> courseList = presenter.getCourses();
+        if (courseList == null || courseList.isEmpty()) {
+            noCoursesTextView.setVisibility(View.VISIBLE);
+        } else {
+            noCoursesTextView.setVisibility(View.GONE);
+        }
+        adapter.set(courseList);
         recyclerView.setAdapter(adapter);
 
         presenter.setView(this);
-        presenter.setCourses(courses);
     }
 }

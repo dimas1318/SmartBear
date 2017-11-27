@@ -3,6 +3,7 @@ package com.example.android.smartbear;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
@@ -15,6 +16,10 @@ import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.validator.UserDataValidator;
 import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +35,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private SessionManager session;
 
+    private FirebaseAuth auth;
+
+
     @BindView(R.id.input_email)
     EditText emailText;
     @BindView(R.id.input_password)
@@ -39,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.link_signup)
     TextView signupLink;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +55,15 @@ public class LoginActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        emailText.setText("parshin@phystech.edu");
+        passwordText.setText("12345x_x_*xYYY");
+
         session = new SessionManagerImpl(getApplicationContext());
     }
 
     @OnClick(R.id.btn_login)
     public void loginButtonClick() {
+//        signIn(emailText.getText().toString(), passwordText.getText().toString());
         login();
     }
 
@@ -60,6 +73,21 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_SIGNUP);
 
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    public void signIn(final String email, final String password) {
+        auth = FirebaseAuth.getInstance();
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    session.createUserSession(email, password, email, false);
+                    onLoginSuccess();
+                } else {
+                    onLoginFailed();
+                }
+            }
+        });
     }
 
     public void login() {
@@ -78,8 +106,8 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
+        final String email = emailText.getText().toString();
+        final String password = passwordText.getText().toString();
 
         if (email.equals("admin") && password.equals("admin")) {
            session.createUserSession(email, password, "Admin", true);
@@ -96,13 +124,15 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }, 3000);
         } else {
-            new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                    onLoginFailed();
-                    progressDialog.dismiss();
-                    }
-                }, 3000);
+            signIn(email, password);
+            progressDialog.dismiss();
+//            new android.os.Handler().postDelayed(
+//                new Runnable() {
+//                    public void run() {
+//                    signIn(email, password);
+//                    progressDialog.dismiss();
+//                    }
+//                }, 5000);
         }
     }
 
@@ -163,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
             UserDataValidator.validatePassword(password);
             passwordText.setError(null);
         } catch (TooShortTextException | TooLongTextException e) {
-            passwordText.setError("between 4 and 10 alphanumeric characters");
+            passwordText.setError("between 4 and 20 alphanumeric characters");
             valid = false;
         }
 

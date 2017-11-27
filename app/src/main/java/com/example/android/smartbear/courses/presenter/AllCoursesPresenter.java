@@ -1,29 +1,23 @@
 package com.example.android.smartbear.courses.presenter;
 
-import android.view.View;
-
-import com.example.android.smartbear.courses.view.CourseView;
 import com.example.android.smartbear.courses.data.CourseListItem;
-import com.example.android.smartbear.courses.view.fragment.CourseFragment;
-import com.example.android.smartbear.database.CourseManager;
-import com.example.android.smartbear.database.CourseManagerFirebase;
+import com.example.android.smartbear.courses.view.CourseView;
 import com.example.android.smartbear.database.CourseManagerImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by parsh on 29.10.2017.
+ * Created by parsh on 01.11.2017.
  */
 
-public class CoursePresenter {
+public class AllCoursesPresenter {
 
     private List<CourseListItem> courses;
     private CourseView view;
 
-    public CoursePresenter() {
-        CourseManager courseManager = new CourseManagerFirebase();
-        courses = courseManager.getUserCourses();
+    public AllCoursesPresenter() {
+        courses = new CourseManagerImpl().getAllCourses();
     }
 
     public void requestSearch(String template) {
