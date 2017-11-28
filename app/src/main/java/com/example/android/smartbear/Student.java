@@ -13,6 +13,11 @@ public class Student {
     public Student() {
     }
 
+    public Student(String studentID, List<AvailableCourse> availableCourses) {
+        StudentID = studentID;
+        AvailableCourses = availableCourses;
+    }
+
     public String getStudentId() {
         return StudentID;
     }

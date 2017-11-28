@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public interface CourseView {
-    void showItemsList(List<CourseListItem> localCourses);
+    void refreshData(List<CourseListItem> courses);
 }

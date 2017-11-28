@@ -16,11 +16,9 @@ import android.widget.TextView;
 
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.courses.presenter.CoursePresenter;
-import com.example.android.smartbear.courses.data.CourseListCache;
 import com.example.android.smartbear.courses.data.CourseListItem;
 import com.example.android.smartbear.courses.adapter.CourseListAdapter;
 import com.example.android.smartbear.courses.view.CourseView;
-import com.example.android.smartbear.database.CourseManagerImpl;
 
 import java.util.List;
 
@@ -42,7 +40,12 @@ public class CourseFragment extends Fragment implements CourseView {
     private CourseListAdapter adapter;
 
     public static CourseFragment newInstance() {
-        return new CourseFragment();
+        CourseFragment fragment = new CourseFragment();
+
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
@@ -91,9 +94,9 @@ public class CourseFragment extends Fragment implements CourseView {
     }
 
     @Override
-    public void showItemsList(List<CourseListItem> localCourses) {
-        adapter.set(localCourses);
-        if (localCourses == null || localCourses.isEmpty()) {
+    public void refreshData(List<CourseListItem> courses) {
+        adapter.set(courses);
+        if (courses == null || courses.isEmpty()) {
             noCoursesTextView.setVisibility(View.VISIBLE);
         } else {
             noCoursesTextView.setVisibility(View.GONE);

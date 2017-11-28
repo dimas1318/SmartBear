@@ -1,11 +1,11 @@
 package com.example.android.smartbear.database;
 
 import com.example.android.smartbear.Course;
+import com.example.android.smartbear.MainActivity;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.Student;
 import com.example.android.smartbear.courses.data.CourseListItem;
-import com.example.android.smartbear.lessons.data.Lesson;
-import com.example.android.smartbear.lessons.data.Material;
+import com.example.android.smartbear.events.ListOfCoursesDownloadedEvent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -13,13 +13,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
-import butterknife.internal.Utils;
 
 /**
  * Created by parsh on 19.11.2017.
@@ -27,7 +24,12 @@ import butterknife.internal.Utils;
 
 public class CourseManagerFirebase implements CourseManager {
     private String userID;
-    boolean isReady = false;
+    private final Bus bus;
+
+    public CourseManagerFirebase() {
+        this.bus = MainActivity.bus;
+        bus.register(this);
+    }
 
     @Override
     public List<CourseListItem> getUserCourses() {
@@ -68,9 +70,10 @@ public class CourseManagerFirebase implements CourseManager {
 //                }
 
                 for (Course course : courses) {
-                    courseListItems.add(new CourseListItem(R.drawable.logo, course.getName()));
+                    courseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
                 }
-                isReady = true;
+
+                bus.post(new ListOfCoursesDownloadedEvent(courseListItems));
             }
 
             @Override
@@ -83,7 +86,6 @@ public class CourseManagerFirebase implements CourseManager {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-//        while (!isReady) {}
 
         return courseListItems;
     }

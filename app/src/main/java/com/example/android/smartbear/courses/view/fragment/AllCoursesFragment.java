@@ -42,7 +42,12 @@ public class AllCoursesFragment extends Fragment implements CourseView {
     private AllCourseListAdapter adapter;
 
     public static AllCoursesFragment newInstance() {
-        return new AllCoursesFragment();
+        AllCoursesFragment fragment = new AllCoursesFragment();
+
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
@@ -88,8 +93,13 @@ public class AllCoursesFragment extends Fragment implements CourseView {
     }
 
     @Override
-    public void showItemsList(List<CourseListItem> localCourses) {
-        adapter.set(localCourses);
+    public void refreshData(List<CourseListItem> courses) {
+        adapter.set(courses);
+        if (courses == null || courses.isEmpty()) {
+            noCoursesTextView.setVisibility(View.VISIBLE);
+        } else {
+            noCoursesTextView.setVisibility(View.GONE);
+        }
     }
 
     private void initView() {
