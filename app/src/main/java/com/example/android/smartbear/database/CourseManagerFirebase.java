@@ -27,6 +27,7 @@ import butterknife.internal.Utils;
 
 public class CourseManagerFirebase implements CourseManager {
     private String userID;
+    boolean isReady = false;
 
     @Override
     public List<CourseListItem> getUserCourses() {
@@ -69,6 +70,7 @@ public class CourseManagerFirebase implements CourseManager {
                 for (Course course : courses) {
                     courseListItems.add(new CourseListItem(R.drawable.logo, course.getName()));
                 }
+                isReady = true;
             }
 
             @Override
@@ -76,11 +78,12 @@ public class CourseManagerFirebase implements CourseManager {
             }
         });
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        while (!isReady) {}
 
         return courseListItems;
     }
