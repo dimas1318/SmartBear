@@ -1,7 +1,9 @@
 package com.example.android.smartbear.materials;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,16 @@ import com.example.android.smartbear.R;
 import com.example.android.smartbear.courses.data.CourseListItem;
 import com.example.android.smartbear.lessons.data.Lesson;
 import com.example.android.smartbear.lessons.data.Material;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Created by parsh on 27.11.2017.
@@ -61,7 +73,41 @@ public class MaterialFragment extends Fragment {
                             materialReference.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Toast.makeText(getContext(), "BOOM!", Toast.LENGTH_SHORT).show();
+                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                                    StorageReference storageRef = storage.getReference("1/0/2/1.txt");
+
+                                    final File localFile = new File(getContext().getFilesDir().getPath().toString() + "/" + "1.txt");
+
+                                    storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                            StringBuilder text = new StringBuilder();
+
+                                            try {
+                                                BufferedReader br = new BufferedReader(new FileReader(localFile));
+                                                String line;
+
+                                                while ((line = br.readLine()) != null) {
+                                                    text.append(line);
+                                                    text.append('\n');
+                                                }
+                                                br.close();
+                                            }
+                                            catch (IOException e) {
+                                                Log.e("KEK", e.getMessage());
+                                                Toast.makeText(getContext(), "Reading failed!", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            Toast.makeText(getContext(), text.toString(), Toast.LENGTH_SHORT).show();
+                                            localFile.delete();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.e("KEK", e.getMessage());
+                                            Toast.makeText(getContext(), "Download failed!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             });
                         }
