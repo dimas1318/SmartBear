@@ -70,8 +70,10 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.link_signup)
     public void signupLinkClick() {
         Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-        startActivityForResult(intent, REQUEST_SIGNUP);
+//        startActivityForResult(intent, REQUEST_SIGNUP);
+        startActivity(intent);
 
+        finish();
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
@@ -137,22 +139,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Implementation of successful signup logic
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                this.finish();
-            }
-        }
-    }
+//    /**
+//     * Implementation of successful signup logic
+//     * @param requestCode
+//     * @param resultCode
+//     * @param data
+//     */
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == REQUEST_SIGNUP) {
+//            if (resultCode == RESULT_OK) {
+//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                startActivity(intent);
+//                this.finish();
+//            }
+//        }
+//    }
 
     @Override
     public void onBackPressed() {

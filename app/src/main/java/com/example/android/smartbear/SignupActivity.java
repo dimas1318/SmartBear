@@ -140,8 +140,15 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
-        setResult(RESULT_OK, null);
+
+        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+        startActivity(intent);
+
         finish();
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+//        setResult(RESULT_OK, null);
+//        finish();
     }
 
     public void onSignupFailed() {
