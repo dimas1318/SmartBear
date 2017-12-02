@@ -11,12 +11,8 @@ import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_details.CourseDetailsFragment;
 import com.example.android.smartbear.courses.data.CourseListItem;
 import com.example.android.smartbear.courses.holder.CourseListViewHolder;
-import com.example.android.smartbear.materials.MaterialFragment;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by Samsung on 26.10.2017.
@@ -43,26 +39,13 @@ public class CourseListAdapter extends RecyclerView.Adapter {
         ((CourseListViewHolder) holder).details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showCourseDetails();
+                showCourseDetails(courseList.get(position));
             }
         });
         ((CourseListViewHolder) holder).deleteCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 deleteCourseFromList(position);
-            }
-        });
-
-        ((CourseListViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fm = fragmentManager;
-                MaterialFragment fragment = MaterialFragment.newInstance(courseList.get(position));
-                fm
-                        .beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.main_container, fragment)
-                        .commit();
             }
         });
     }
@@ -76,9 +59,9 @@ public class CourseListAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void showCourseDetails() {
+    private void showCourseDetails(CourseListItem courseListItem) {
         FragmentManager fm = fragmentManager;
-        Fragment fragment = new CourseDetailsFragment();
+        Fragment fragment = CourseDetailsFragment.newInstance(courseListItem);
         fm
                 .beginTransaction()
                 .addToBackStack(null)

@@ -4,6 +4,18 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/nameOfCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:textColor="#f3aa40"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
     <ImageView
         android:id="@+id/courseLogo"
         android:layout_width="match_parent"
@@ -11,16 +23,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
-
-    <TextView
-        android:id="@+id/nameOfCourse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:gravity="center_horizontal|center_vertical"
-        android:textColor="#f3aa40" />
 
     <Button
         android:id="@+id/details"
