@@ -5,6 +5,7 @@ import com.example.android.smartbear.MainActivity;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.Student;
 import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.events.CourseDeletedEvent;
 import com.example.android.smartbear.events.ListOfCoursesDownloadedEvent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -93,6 +94,32 @@ public class CourseManagerFirebase implements CourseManager {
     @Override
     public List<CourseListItem> getAllCourses() {
         return null;
+    }
+
+    @Override
+    public void deleteCourse(final CourseListItem course, final int position) {
+        final String name = course.getCourseName();
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference referenceCourses = firebaseDatabase.getReference("Courses");
+        referenceCourses.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot) {
+               for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                   if(name.equalsIgnoreCase(ds.getValue(Course.class).getName())) {
+                       String key = ds.getKey();
+                       referenceCourses.child(key).removeValue();
+                       break;
+                   }
+               }
+
+               bus.post(new CourseDeletedEvent(position));
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+           }
+       });
     }
 
     private List<Student> getStudentList() {

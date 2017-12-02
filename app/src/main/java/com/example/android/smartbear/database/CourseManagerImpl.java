@@ -34,4 +34,9 @@ public class CourseManagerImpl implements CourseManager {
         list.add(new CourseListItem(R.drawable.logo, "Очередной курс Лехи"));
         return list;
     }
+
+    @Override
+    public void deleteCourse(CourseListItem course, int position) {
+
+    }
 }

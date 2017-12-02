@@ -13,4 +13,6 @@ public interface CourseManager {
    List<CourseListItem> getUserCourses();
 
    List<CourseListItem> getAllCourses();
+
+   void deleteCourse(CourseListItem course, int position);
 }

@@ -102,6 +102,11 @@ public class AllCoursesFragment extends Fragment implements CourseView {
         }
     }
 
+    @Override
+    public void deleteCourse(int position) {
+
+    }
+
     private void initView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);

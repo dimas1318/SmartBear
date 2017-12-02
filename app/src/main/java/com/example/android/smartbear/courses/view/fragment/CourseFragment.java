@@ -15,9 +15,9 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.android.smartbear.R;
-import com.example.android.smartbear.courses.presenter.CoursePresenter;
-import com.example.android.smartbear.courses.data.CourseListItem;
 import com.example.android.smartbear.courses.adapter.CourseListAdapter;
+import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.presenter.CoursePresenter;
 import com.example.android.smartbear.courses.view.CourseView;
 
 import java.util.List;
@@ -101,6 +101,11 @@ public class CourseFragment extends Fragment implements CourseView {
         } else {
             noCoursesTextView.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void deleteCourse(int position) {
+        adapter.deleteCourse(position);
     }
 
     private void initView() {

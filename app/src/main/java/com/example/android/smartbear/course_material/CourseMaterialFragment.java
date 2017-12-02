@@ -52,7 +52,7 @@ public class CourseMaterialFragment extends Fragment {
 
         List<Material> materials = (List<Material>) getArguments().getSerializable("MATERIALS");
 
-        for (Material material : materials) {
+        for (final Material material : materials) {
             View materialLayout = getLayoutInflater().inflate(R.layout.item_material, null);
 
             ((TextView) (materialLayout.findViewById(R.id.material_name))).setText(material.getName());
@@ -66,7 +66,7 @@ public class CourseMaterialFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageRef = storage.getReference("1/0/2/1.txt");
+                        StorageReference storageRef = storage.getReference(material.getReference());
 
                         final File localFile = new File(getContext().getFilesDir().getPath() + "/" + "1.txt");
 

@@ -11,6 +11,8 @@ import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_details.CourseDetailsFragment;
 import com.example.android.smartbear.courses.data.CourseListItem;
 import com.example.android.smartbear.courses.holder.CourseListViewHolder;
+import com.example.android.smartbear.database.CourseManager;
+import com.example.android.smartbear.database.CourseManagerFirebase;
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class CourseListAdapter extends RecyclerView.Adapter {
         ((CourseListViewHolder) holder).details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showCourseDetails(courseList.get(position));
+                showCourseDetails(position);
             }
         });
         ((CourseListViewHolder) holder).deleteCourseButton.setOnClickListener(new View.OnClickListener() {
@@ -59,9 +61,9 @@ public class CourseListAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void showCourseDetails(CourseListItem courseListItem) {
+    private void showCourseDetails(int position) {
         FragmentManager fm = fragmentManager;
-        Fragment fragment = CourseDetailsFragment.newInstance(courseListItem);
+        Fragment fragment = CourseDetailsFragment.newInstance(courseList.get(position));
         fm
                 .beginTransaction()
                 .addToBackStack(null)
@@ -70,13 +72,17 @@ public class CourseListAdapter extends RecyclerView.Adapter {
     }
 
     private void deleteCourseFromList(int position) {
-        courseList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, courseList.size());
+        CourseManager courseManager = new CourseManagerFirebase();
+        courseManager.deleteCourse(courseList.get(position), position);
     }
 
     public void set(List<CourseListItem> courses) {
         courseList = courses;
+        notifyDataSetChanged();
+    }
+
+    public void deleteCourse(int position) {
+        courseList.remove(position);
         notifyDataSetChanged();
     }
 }
