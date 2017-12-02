@@ -22,13 +22,6 @@
         android:textColor="#e9530e"
         android:visibility="gone"/>
 
-    <LinearLayout
-        android:id="@+id/material_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"/>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
