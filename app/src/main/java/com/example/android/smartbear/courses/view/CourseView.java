@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface CourseView {
     void refreshData(List<CourseListItem> courses);
+
+    void deleteCourse(int position);
 }

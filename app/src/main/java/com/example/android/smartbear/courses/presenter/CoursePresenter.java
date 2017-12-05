@@ -1,10 +1,11 @@
 package com.example.android.smartbear.courses.presenter;
 
 import com.example.android.smartbear.MainActivity;
-import com.example.android.smartbear.courses.view.CourseView;
 import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.view.CourseView;
 import com.example.android.smartbear.database.CourseManager;
 import com.example.android.smartbear.database.CourseManagerFirebase;
+import com.example.android.smartbear.events.CourseDeletedEvent;
 import com.example.android.smartbear.events.ListOfCoursesDownloadedEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -59,5 +60,10 @@ public class CoursePresenter {
     @Subscribe
     public void refreshData(ListOfCoursesDownloadedEvent event) {
         view.refreshData(event.getCourses());
+    }
+
+    @Subscribe
+    public void deleteCourse(CourseDeletedEvent event) {
+        view.deleteCourse(event.getPosition());
     }
 }

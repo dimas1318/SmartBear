@@ -1,10 +1,12 @@
 package com.example.android.smartbear.lessons.data;
 
+import java.io.Serializable;
+
 /**
  * Created by parsh on 19.11.2017.
  */
 
-public class Material {
+public class Material implements Serializable {
     private String Name;
     private String Type;
     private String Reference;
