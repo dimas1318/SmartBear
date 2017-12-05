@@ -1,5 +1,6 @@
 package com.example.android.smartbear.database;
 
+import com.example.android.smartbear.AvailableCourse;
 import com.example.android.smartbear.Course;
 import com.example.android.smartbear.MainActivity;
 import com.example.android.smartbear.R;
@@ -33,8 +34,7 @@ public class CourseManagerFirebase implements CourseManager {
 
     @Override
     public List<CourseListItem> getUserCourses() {
-        final List<CourseListItem> courseListItems = new ArrayList<>();
-
+        final List<CourseListItem> myCourseListItems = new ArrayList<>();
         //Getting of current user id
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -46,8 +46,25 @@ public class CourseManagerFirebase implements CourseManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Course> courses = new ArrayList<>();
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     courses.add(ds.getValue(Course.class));
+                }
+
+                final List<Course> coursesList = new ArrayList<>();
+                coursesList.addAll(courses);
+
+                List<Course> list = new ArrayList<>();
+
+                for (Student student : getStudentList()) {
+                    if (userID.equals(student.getStudentId())) {
+                        for (AvailableCourse course : student.getAvailableCourses()) {
+                            list.add(coursesList.get(course.getCourseId() - 1));
+                        }
+                    }
+                }
+
+                for (Course course : list) {
+                    myCourseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
                 }
 
 //                for (Course course : courses) {
@@ -68,12 +85,10 @@ public class CourseManagerFirebase implements CourseManager {
 //                    }
 //                    System.out.println("***********************");
 //                }
-
-                for (Course course : courses) {
-                    courseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
-                }
-
-                bus.post(new ListOfCoursesDownloadedEvent(courseListItems));
+//                for (Course course : courses) {
+//                    courseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
+//                }
+                bus.post(new ListOfCoursesDownloadedEvent(myCourseListItems));
             }
 
             @Override
@@ -87,7 +102,8 @@ public class CourseManagerFirebase implements CourseManager {
 //            e.printStackTrace();
 //        }
 
-        return courseListItems;
+
+        return myCourseListItems;
     }
 
     @Override
@@ -103,7 +119,7 @@ public class CourseManagerFirebase implements CourseManager {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     students.add(ds.getValue(Student.class));
                 }
             }
@@ -115,4 +131,6 @@ public class CourseManagerFirebase implements CourseManager {
 
         return students;
     }
+
+
 }
