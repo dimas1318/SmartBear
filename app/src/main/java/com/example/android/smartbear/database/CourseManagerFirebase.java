@@ -25,7 +25,7 @@ import java.util.List;
  */
 
 public class CourseManagerFirebase implements CourseManager {
-//    private String userID;
+    private String userID;
     private final Bus bus;
 
     public CourseManagerFirebase() {
@@ -39,7 +39,7 @@ public class CourseManagerFirebase implements CourseManager {
         //Getting of current user id
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-        String userID = user.getUid();
+        userID = user.getUid();
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference referenceCourses = firebaseDatabase.getReference("Courses");
