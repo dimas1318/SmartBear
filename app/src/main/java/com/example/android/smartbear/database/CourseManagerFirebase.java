@@ -1,11 +1,12 @@
 package com.example.android.smartbear.database;
 
+import com.example.android.smartbear.AvailableCourse;
 import com.example.android.smartbear.Course;
 import com.example.android.smartbear.MainActivity;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.Student;
 import com.example.android.smartbear.courses.data.CourseListItem;
-import com.example.android.smartbear.events.CourseDeletedEvent;
+import com.example.android.smartbear.events.ListOfAllCoursesDownloadedEvent;
 import com.example.android.smartbear.events.ListOfCoursesDownloadedEvent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 
 public class CourseManagerFirebase implements CourseManager {
-    private String userID;
+//    private String userID;
     private final Bus bus;
 
     public CourseManagerFirebase() {
@@ -39,7 +40,7 @@ public class CourseManagerFirebase implements CourseManager {
         //Getting of current user id
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-        userID = user.getUid();
+        String userID = user.getUid();
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference referenceCourses = firebaseDatabase.getReference("Courses");
@@ -93,33 +94,83 @@ public class CourseManagerFirebase implements CourseManager {
 
     @Override
     public List<CourseListItem> getAllCourses() {
-        return null;
+        final List<CourseListItem> courseListItems = new ArrayList<>();
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference referenceCourses = firebaseDatabase.getReference("Courses");
+        referenceCourses.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Course> courses = new ArrayList<>();
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    courses.add(ds.getValue(Course.class));
+                }
+
+                for (Course course : courses) {
+                    courseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
+                }
+
+                bus.post(new ListOfAllCoursesDownloadedEvent(courseListItems));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        return courseListItems;
     }
 
     @Override
     public void deleteCourse(final CourseListItem course, final int position) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        final String userID = user.getUid();
+
         final String name = course.getCourseName();
 
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference referenceCourses = firebaseDatabase.getReference("Courses");
-        referenceCourses.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(DataSnapshot dataSnapshot) {
-               for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                   if(name.equalsIgnoreCase(ds.getValue(Course.class).getName())) {
-                       String key = ds.getKey();
-                       referenceCourses.child(key).removeValue();
-                       break;
-                   }
-               }
+        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference reference = firebaseDatabase.getReference("Courses");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    Course course = ds.getValue(Course.class);
+                    if (course.getName().equals(name)) {
+                        final int id = course.getCourseId();
 
-               bus.post(new CourseDeletedEvent(position));
-           }
+                        final DatabaseReference studentReference = firebaseDatabase.getReference("Students");
+                        studentReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                    Student student = ds.getValue(Student.class);
+                                    if (student.getStudentId().equals(userID)) {
+                                        for(DataSnapshot availableCoursesDs : ds.getChildren()) {
+                                            for(DataSnapshot availableCourseDs : availableCoursesDs.getChildren()) {
+                                                if (availableCourseDs.getValue(AvailableCourse.class).getCourseId() == id) {
+                                                    studentReference.child(ds.getKey()).child(availableCoursesDs.getKey()).child(availableCourseDs.getKey()).removeValue();
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
-           @Override
-           public void onCancelled(DatabaseError databaseError) {
-           }
-       });
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     private List<Student> getStudentList() {
