@@ -1,8 +1,14 @@
 package com.example.android.smartbear.courses.presenter;
 
+import com.example.android.smartbear.MainActivity;
 import com.example.android.smartbear.courses.data.CourseListItem;
 import com.example.android.smartbear.courses.view.CourseView;
-import com.example.android.smartbear.database.CourseManagerImpl;
+import com.example.android.smartbear.database.CourseManager;
+import com.example.android.smartbear.database.CourseManagerFirebase;
+import com.example.android.smartbear.events.ListOfAllCoursesDownloadedEvent;
+import com.example.android.smartbear.events.ListOfCoursesDownloadedEvent;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +21,14 @@ public class AllCoursesPresenter {
 
     private List<CourseListItem> courses;
     private CourseView view;
+    private final Bus bus;
 
     public AllCoursesPresenter() {
-        courses = new CourseManagerImpl().getAllCourses();
+        bus = MainActivity.bus;
+        bus.register(this);
+
+        CourseManager courseManager = new CourseManagerFirebase();
+        courses = courseManager.getAllCourses();
     }
 
     public void requestSearch(String template) {
@@ -44,5 +55,10 @@ public class AllCoursesPresenter {
 
     public List<CourseListItem> getCourses() {
         return courses;
+    }
+
+    @Subscribe
+    public void refreshData(ListOfAllCoursesDownloadedEvent event) {
+        view.refreshData(event.getCourses());
     }
 }

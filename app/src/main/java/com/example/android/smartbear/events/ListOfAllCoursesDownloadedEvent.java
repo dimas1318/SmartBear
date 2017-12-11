@@ -9,13 +9,13 @@ import java.util.List;
  */
 
 public class ListOfAllCoursesDownloadedEvent {
-    private final List<CourseListItem> courseListItems;
+    private final List<CourseListItem> courses;
 
-    public ListOfAllCoursesDownloadedEvent(List<CourseListItem> courseListItems) {
-        this.courseListItems = courseListItems;
+    public ListOfAllCoursesDownloadedEvent(List<CourseListItem> courses) {
+        this.courses = courses;
     }
 
-    public List<CourseListItem> getCourseListItems() {
-        return courseListItems;
+    public List<CourseListItem> getCourses() {
+        return courses;
     }
 }

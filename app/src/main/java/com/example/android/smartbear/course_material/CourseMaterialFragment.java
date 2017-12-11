@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.lessons.data.Material;
+import com.example.android.smartbear.material.TextCourseMaterialFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -32,6 +34,8 @@ import java.util.List;
  */
 
 public class CourseMaterialFragment extends Fragment {
+
+    private static final String TAG = CourseMaterialFragment.class.getName();
 
     public static CourseMaterialFragment newInstance(List<Material> materials) {
         CourseMaterialFragment fragment = new CourseMaterialFragment();
@@ -85,17 +89,24 @@ public class CourseMaterialFragment extends Fragment {
                                     }
                                     br.close();
                                 } catch (IOException e) {
-                                    Log.e("KEK", e.getMessage());
+                                    Log.e(TAG, e.getMessage());
                                     Toast.makeText(getContext(), "Reading failed!", Toast.LENGTH_SHORT).show();
                                 }
 
-                                Toast.makeText(getContext(), text.toString(), Toast.LENGTH_SHORT).show();
+                                FragmentManager fm = getFragmentManager();
+                                Fragment fragment = TextCourseMaterialFragment.newInstance(text.toString());
+                                fm
+                                        .beginTransaction()
+                                        .addToBackStack(null)
+                                        .replace(R.id.main_container, fragment)
+                                        .commit();
+
                                 localFile.delete();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.e("KEK", e.getMessage());
+                                Log.e(TAG, e.getMessage());
                                 Toast.makeText(getContext(), "Download failed!", Toast.LENGTH_SHORT).show();
                             }
                         });

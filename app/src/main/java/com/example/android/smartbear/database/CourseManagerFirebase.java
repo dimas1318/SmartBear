@@ -25,7 +25,6 @@ import java.util.List;
  */
 
 public class CourseManagerFirebase implements CourseManager {
-    private String userID;
     private final Bus bus;
 
     public CourseManagerFirebase() {
@@ -35,76 +34,58 @@ public class CourseManagerFirebase implements CourseManager {
 
     @Override
     public List<CourseListItem> getUserCourses() {
-        final List<CourseListItem> myCourseListItems = new ArrayList<>();
-        //Getting of current user id
+        final List<CourseListItem> studentCourseListItems = new ArrayList<>();
+
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-        userID = user.getUid();
+        final String userID = user.getUid();
 
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference referenceCourses = firebaseDatabase.getReference("Courses");
-        referenceCourses.addValueEventListener(new ValueEventListener() {
+        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference reference = firebaseDatabase.getReference("Students");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Course> courses = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    courses.add(ds.getValue(Course.class));
-                }
+                    final Student student = ds.getValue(Student.class);
+                    if (student.getStudentId().equals(userID)) {
+                        System.out.println("USER FOUND");
+                        if (student.getAvailableCourses() != null) {
+                            final DatabaseReference coursesReference = firebaseDatabase.getReference("Courses");
+                            coursesReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        Course course = ds.getValue(Course.class);
+                                        System.out.println("COURSE ID = " + course.getCourseId());
+                                        for (AvailableCourse availableCourse : student.getAvailableCourses()) {
+                                            if (availableCourse.getCourseId() == course.getCourseId()) {
+                                                System.out.println("COURSE FOUND");
+                                                studentCourseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
+                                                break;
+                                            }
+                                        }
+                                        bus.post(new ListOfCoursesDownloadedEvent(studentCourseListItems));
+                                    }
+                                }
 
-                final List<Course> coursesList = new ArrayList<>();
-                coursesList.addAll(courses);
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
-                List<Course> list = new ArrayList<>();
-
-                for (Student student : getStudentList()) {
-                    if (userID.equals(student.getStudentId())) {
-                        for (AvailableCourse course : student.getAvailableCourses()) {
-                            list.add(coursesList.get(course.getCourseId() - 1));
+                                }
+                            });
                         }
+                        return;
                     }
                 }
-
-                for (Course course : list) {
-                    myCourseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
-                }
-
-//                for (Course course : courses) {
-//                    System.out.println(course.getCourseId());
-//                    System.out.println(course.getName());
-//                    if (course.getLessons() != null) {
-//                        for (Lesson lesson : course.getLessons()) {
-//                            System.out.println(lesson.getName());
-//                            System.out.println(lesson.getOrder());
-//                            for (Material material : lesson.getMaterials()) {
-//                                System.out.println(material.getName());
-//                                if (material.getReference() != null) {
-//                                    System.out.println(material.getReference());
-//                                }
-//                                System.out.println(material.getType());
-//                            }
-//                        }
-//                    }
-//                    System.out.println("***********************");
-//                }
-//                for (Course course : courses) {
-//                    courseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
-//                }
-                bus.post(new ListOfCoursesDownloadedEvent(myCourseListItems));
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
-
-        return myCourseListItems;
+        return studentCourseListItems;
     }
 
     @Override
@@ -208,6 +189,4 @@ public class CourseManagerFirebase implements CourseManager {
 
         return students;
     }
-
-
 }

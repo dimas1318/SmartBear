@@ -34,13 +34,13 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ((AllCourseListViewHolder) holder).courseLogo.setImageResource(courseList.get(position).getCourseLogoId());
         ((AllCourseListViewHolder) holder).nameOfCourse.setText(courseList.get(position).getCourseName());
         ((AllCourseListViewHolder) holder).details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showCourseDetails();
+                showCourseDetails(position);
             }
         });
     }
@@ -50,9 +50,9 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
         return courseList.size();
     }
 
-    public void showCourseDetails() {
+    public void showCourseDetails(int position) {
         FragmentManager fm = fragmentManager;
-        Fragment fragment = new CourseDetailsFragment();
+        Fragment fragment = CourseDetailsFragment.newInstance(courseList.get(position));
         fm
                 .beginTransaction()
                 .addToBackStack(null)
