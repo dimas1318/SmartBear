@@ -18,7 +18,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by parsh on 19.11.2017.
@@ -48,7 +50,6 @@ public class CourseManagerFirebase implements CourseManager {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     final Student student = ds.getValue(Student.class);
                     if (student.getStudentId().equals(userID)) {
-                        System.out.println("USER FOUND");
                         if (student.getAvailableCourses() != null) {
                             final DatabaseReference coursesReference = firebaseDatabase.getReference("Courses");
                             coursesReference.addValueEventListener(new ValueEventListener() {
@@ -56,10 +57,8 @@ public class CourseManagerFirebase implements CourseManager {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                         Course course = ds.getValue(Course.class);
-                                        System.out.println("COURSE ID = " + course.getCourseId());
                                         for (AvailableCourse availableCourse : student.getAvailableCourses()) {
                                             if (availableCourse.getCourseId() == course.getCourseId()) {
-                                                System.out.println("COURSE FOUND");
                                                 studentCourseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
                                                 break;
                                             }
@@ -188,5 +187,58 @@ public class CourseManagerFirebase implements CourseManager {
         });
 
         return students;
+    }
+
+
+    @Override
+    public void addCourse(CourseListItem course) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        final String userID = user.getUid();
+
+        final String name = course.getCourseName();
+
+        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference reference = firebaseDatabase.getReference("Courses");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    Course course = ds.getValue(Course.class);
+                    if (course.getName().equals(name)) {
+                        final int id = course.getCourseId();
+
+                        final DatabaseReference studentReference = firebaseDatabase.getReference("Students");
+                        studentReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                    Student student = ds.getValue(Student.class);
+                                    if (student.getStudentId().equals(userID)) {
+                                        for(DataSnapshot availableCoursesDs : ds.getChildren()) {
+                                            Map<String, Integer> value = new HashMap<>();
+                                            value.put("CourseID", id);
+                                            studentReference.child(ds.getKey()).child(availableCoursesDs.getKey())
+                                                    .child(String.valueOf(availableCoursesDs.getChildrenCount()))
+                                                    .setValue(value);
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 }

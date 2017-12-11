@@ -39,4 +39,9 @@ public class CourseManagerImpl implements CourseManager {
     public void deleteCourse(CourseListItem course, int position) {
 
     }
+
+    @Override
+    public void addCourse(CourseListItem course) {
+        
+    }
 }

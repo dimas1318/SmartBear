@@ -11,7 +11,8 @@ import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_details.CourseDetailsFragment;
 import com.example.android.smartbear.courses.data.CourseListItem;
 import com.example.android.smartbear.courses.holder.AllCourseListViewHolder;
-import com.example.android.smartbear.courses.holder.CourseListViewHolder;
+import com.example.android.smartbear.database.CourseManager;
+import com.example.android.smartbear.database.CourseManagerFirebase;
 
 import java.util.List;
 
@@ -43,11 +44,22 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
                 showCourseDetails(position);
             }
         });
+        ((AllCourseListViewHolder) holder).addCourseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCourseToList(position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return courseList.size();
+    }
+
+    private void addCourseToList(int position) {
+        CourseManager courseManager = new CourseManagerFirebase();
+        courseManager.addCourse(courseList.get(position));
     }
 
     public void showCourseDetails(int position) {
