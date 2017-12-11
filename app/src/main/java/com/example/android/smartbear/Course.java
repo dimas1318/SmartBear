@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Course {
     private int CourseID;
+    private CourseInfo courseInfo;
     private String Name;
     private List<Lesson> Lessons;
 
