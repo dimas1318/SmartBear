@@ -1,6 +1,6 @@
 TO-DO
 1) Merge classes Course and CourseListItem (***Alexey***)
-3) Fix "getUserCourses()" method in "CourseManagerFirebase" class (***Alexey***)
+2) на вкладке все курсы по нажатию кнопки course details выводить краткую инфу по курсу (лектор, количество занятий, описание предмета) (***Alexey***)
 4) add Navigator class (***Dmitry***)
 
 IN PROGRESS
@@ -15,3 +15,4 @@ ON REVIEW
 7) synchronization of adding user in database and in authenticated ones pool
 8) add MaterialFragment class
 9) Remove delay in "CourseManagerFirebase" class
+10) Fix "getUserCourses()" method in "CourseManagerFirebase" class
