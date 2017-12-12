@@ -58,7 +58,7 @@ public class CourseManagerFirebase implements CourseManager {
                                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                         Course course = ds.getValue(Course.class);
                                         for (AvailableCourse availableCourse : student.getAvailableCourses()) {
-                                            if (availableCourse.getCourseId() == course.getCourseId()) {
+                                            if (availableCourse != null && availableCourse.getCourseId() == course.getCourseId()) {
                                                 studentCourseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
                                                 break;
                                             }
@@ -200,7 +200,7 @@ public class CourseManagerFirebase implements CourseManager {
 
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference reference = firebaseDatabase.getReference("Courses");
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
@@ -209,17 +209,22 @@ public class CourseManagerFirebase implements CourseManager {
                         final int id = course.getCourseId();
 
                         final DatabaseReference studentReference = firebaseDatabase.getReference("Students");
-                        studentReference.addValueEventListener(new ValueEventListener() {
+                        studentReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                                     Student student = ds.getValue(Student.class);
                                     if (student.getStudentId().equals(userID)) {
+                                        for (AvailableCourse availableCourse : student.getAvailableCourses()) {
+                                            if (availableCourse != null && availableCourse.getCourseId() == id) {
+                                                return;
+                                            }
+                                        }
                                         for(DataSnapshot availableCoursesDs : ds.getChildren()) {
                                             Map<String, Integer> value = new HashMap<>();
                                             value.put("CourseID", id);
                                             studentReference.child(ds.getKey()).child(availableCoursesDs.getKey())
-                                                    .child(String.valueOf(availableCoursesDs.getChildrenCount()))
+                                                    .child(String.valueOf(availableCoursesDs.getKey()))
                                                     .setValue(value);
                                             return;
                                         }
@@ -232,6 +237,7 @@ public class CourseManagerFirebase implements CourseManager {
 
                             }
                         });
+                        return;
                     }
                 }
             }
