@@ -101,7 +101,7 @@ public class CourseManagerFirebase implements CourseManager {
                 }
 
                 for (Course course : courses) {
-                    courseListItems.add(new Course(R.drawable.logo, course.getName(), course.getLessons()));
+                    courseListItems.add(new Course(R.drawable.logo, course.getName(), course.getLessons(), course.getCourseInfo()));
                 }
 
                 bus.post(new ListOfAllCoursesDownloadedEvent(courseListItems));

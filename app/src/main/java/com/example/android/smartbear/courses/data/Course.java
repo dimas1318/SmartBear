@@ -13,22 +13,13 @@ import java.util.List;
 public class Course implements Serializable {
 
     private int CourseID;
-    private CourseInfo courseInfo;
+    private CourseInfo CourseInfo;
     private String Name;
     private List<Lesson> Lessons;
 
 
     public Course() {
     }
-
-    public CourseInfo getCourseInfo() {
-        return courseInfo;
-    }
-
-    public void setCourseInfo(CourseInfo courseInfo) {
-        this.courseInfo = courseInfo;
-    }
-
 
     public Course(int courseLogo, String Name) {
         this.CourseID = courseLogo;
@@ -39,6 +30,21 @@ public class Course implements Serializable {
         this.CourseID = courseLogo;
         this.Name = Name;
         this.Lessons = lessons;
+    }
+
+    public Course(int courseLogo, String Name, List<Lesson> lessons, CourseInfo courseInfo) {
+        this.CourseID = courseLogo;
+        this.Name = Name;
+        this.Lessons = lessons;
+        this.CourseInfo = courseInfo;
+    }
+
+    public CourseInfo getCourseInfo() {
+        return CourseInfo;
+    }
+
+    public void setCourseInfo(CourseInfo courseInfo) {
+        this.CourseInfo = courseInfo;
     }
 
     public int getCourseId() {

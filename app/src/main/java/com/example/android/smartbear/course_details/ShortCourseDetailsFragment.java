@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.smartbear.CourseInfo;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.courses.data.Course;
 
@@ -42,11 +43,16 @@ public class ShortCourseDetailsFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         Course course = (Course) getArguments().getSerializable("COURSE");
-//        CourseInfo courseInfo = course.
-        lecturer.setText(course.getName());
-        numberOfLessons.setText(course.getCourseId());
-        description.setText(course.getName());
-
+        CourseInfo courseInfo = course.getCourseInfo();
+        if (courseInfo != null) {
+            lecturer.setText(courseInfo.getLecturer());
+            numberOfLessons.setText(String.valueOf(course.getLessons().size()));
+            description.setText(courseInfo.getBriefInfo());
+        } else {
+            lecturer.setText("неизвестно");
+            numberOfLessons.setText("неизвестно");
+            description.setText("неизвестно");
+        }
         return view;
     }
 }
