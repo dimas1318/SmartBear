@@ -38,6 +38,7 @@ public class CourseDetailsFragment extends Fragment {
 
         CourseListItem course = (CourseListItem) getArguments().getSerializable("COURSE");
         if (course.getLessons() != null) {
+
             view.findViewById(R.id.no_data).setVisibility(View.GONE);
 
             for (final Lesson lesson : course.getLessons()) {

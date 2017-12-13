@@ -1,5 +1,6 @@
-package com.example.android.smartbear;
+package com.example.android.smartbear.courses.data;
 
+import com.example.android.smartbear.CourseInfo;
 import com.example.android.smartbear.lessons.data.Lesson;
 
 import java.util.List;
@@ -9,12 +10,21 @@ import java.util.List;
  */
 
 public class Course {
+
     private int CourseID;
     private CourseInfo courseInfo;
     private String Name;
     private List<Lesson> Lessons;
 
     public Course() {
+    }
+
+    public CourseInfo getCourseInfo() {
+        return courseInfo;
+    }
+
+    public void setCourseInfo(CourseInfo courseInfo) {
+        this.courseInfo = courseInfo;
     }
 
     public int getCourseId() {

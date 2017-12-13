@@ -1,7 +1,7 @@
 package com.example.android.smartbear.database;
 
 import com.example.android.smartbear.AvailableCourse;
-import com.example.android.smartbear.Course;
+import com.example.android.smartbear.courses.data.Course;
 import com.example.android.smartbear.MainActivity;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.Student;

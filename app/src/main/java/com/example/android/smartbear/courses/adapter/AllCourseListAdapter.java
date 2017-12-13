@@ -1,5 +1,6 @@
 package com.example.android.smartbear.courses.adapter;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_details.CourseDetailsFragment;
+import com.example.android.smartbear.course_details.ShortCourseDetailsFragment;
 import com.example.android.smartbear.courses.data.CourseListItem;
 import com.example.android.smartbear.courses.holder.AllCourseListViewHolder;
 import com.example.android.smartbear.database.CourseManager;
@@ -64,7 +66,7 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
 
     public void showCourseDetails(int position) {
         FragmentManager fm = fragmentManager;
-        Fragment fragment = CourseDetailsFragment.newInstance(courseList.get(position));
+        Fragment fragment = ShortCourseDetailsFragment.newInstance(courseList.get(position));
         fm
                 .beginTransaction()
                 .addToBackStack(null)

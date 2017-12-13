@@ -10,9 +10,13 @@ import java.util.List;
  */
 
 public class CourseListItem implements Serializable {
+
     private int courseLogoId;
     private String courseName;
     private List<Lesson> lessons;
+
+    public CourseListItem() {
+    }
 
     public CourseListItem(int courseLogo, String courseName) {
         this.courseLogoId = courseLogo;
@@ -35,5 +39,16 @@ public class CourseListItem implements Serializable {
 
     public List<Lesson> getLessons() {
         return lessons;
+    }
+    public void setCourseLogoId(int courseLogoId) {
+        this.courseLogoId = courseLogoId;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
     }
 }
