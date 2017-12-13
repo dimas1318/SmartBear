@@ -215,16 +215,18 @@ public class CourseManagerFirebase implements CourseManager {
                                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                                     Student student = ds.getValue(Student.class);
                                     if (student.getStudentId().equals(userID)) {
-                                        for (AvailableCourse availableCourse : student.getAvailableCourses()) {
-                                            if (availableCourse != null && availableCourse.getCourseId() == id) {
-                                                return;
+                                        if (student.getAvailableCourses() != null) {
+                                            for (AvailableCourse availableCourse : student.getAvailableCourses()) {
+                                                if (availableCourse != null && availableCourse.getCourseId() == id) {
+                                                    return;
+                                                }
                                             }
                                         }
                                         for(DataSnapshot availableCoursesDs : ds.getChildren()) {
                                             Map<String, Integer> value = new HashMap<>();
                                             value.put("CourseID", id);
                                             studentReference.child(ds.getKey()).child(availableCoursesDs.getKey())
-                                                    .child(String.valueOf(availableCoursesDs.getKey()))
+                                                    .child(String.valueOf(id - 1))
                                                     .setValue(value);
                                             return;
                                         }

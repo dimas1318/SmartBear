@@ -60,56 +60,59 @@ public class CourseMaterialFragment extends Fragment {
             View materialLayout = getLayoutInflater().inflate(R.layout.item_material, null);
 
             ((TextView) (materialLayout.findViewById(R.id.material_name))).setText(material.getName());
-            ((TextView) (materialLayout.findViewById(R.id.material_type))).setText(material.getType());
+            final TextView materialType = materialLayout.findViewById(R.id.material_type);
+            materialType.setText(material.getType());
 
             if (material.getReference() != null) {
-                TextView materialReference = materialLayout.findViewById(R.id.material_reference);
+                final TextView materialReference = materialLayout.findViewById(R.id.material_reference);
                 materialReference.setVisibility(View.VISIBLE);
                 materialReference.setText(material.getReference());
                 materialReference.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageRef = storage.getReference(material.getReference());
+                        if (materialType.getText().toString().equalsIgnoreCase("text")) {
+                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                            StorageReference storageRef = storage.getReference(material.getReference());
 
-                        final File localFile = new File(getContext().getFilesDir().getPath() + "/" + "1.txt");
+                            final File localFile = new File(getContext().getFilesDir().getPath() + "/" + materialReference.getText().toString());
 
-                        storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                StringBuilder text = new StringBuilder();
+                            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    StringBuilder text = new StringBuilder();
 
-                                try {
-                                    BufferedReader br = new BufferedReader(new FileReader(localFile));
-                                    String line;
+                                    try {
+                                        BufferedReader br = new BufferedReader(new FileReader(localFile));
+                                        String line;
 
-                                    while ((line = br.readLine()) != null) {
-                                        text.append(line);
-                                        text.append('\n');
+                                        while ((line = br.readLine()) != null) {
+                                            text.append(line);
+                                            text.append('\n');
+                                        }
+                                        br.close();
+                                    } catch (IOException e) {
+                                        Log.e(TAG, e.getMessage());
+                                        Toast.makeText(getContext(), "Reading failed!", Toast.LENGTH_SHORT).show();
                                     }
-                                    br.close();
-                                } catch (IOException e) {
-                                    Log.e(TAG, e.getMessage());
-                                    Toast.makeText(getContext(), "Reading failed!", Toast.LENGTH_SHORT).show();
+
+                                    FragmentManager fm = getFragmentManager();
+                                    Fragment fragment = TextCourseMaterialFragment.newInstance(text.toString());
+                                    fm
+                                            .beginTransaction()
+                                            .addToBackStack(null)
+                                            .replace(R.id.main_container, fragment)
+                                            .commit();
+
+                                    localFile.delete();
                                 }
-
-                                FragmentManager fm = getFragmentManager();
-                                Fragment fragment = TextCourseMaterialFragment.newInstance(text.toString());
-                                fm
-                                        .beginTransaction()
-                                        .addToBackStack(null)
-                                        .replace(R.id.main_container, fragment)
-                                        .commit();
-
-                                localFile.delete();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(TAG, e.getMessage());
-                                Toast.makeText(getContext(), "Download failed!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e(TAG, e.getMessage());
+                                    Toast.makeText(getContext(), "Download failed!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
                     }
                 });
             }
