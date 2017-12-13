@@ -1,6 +1,6 @@
 package com.example.android.smartbear.courses.view;
 
-import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.data.Course;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public interface CourseView {
-    void refreshData(List<CourseListItem> courses);
+    void refreshData(List<Course> courses);
 
     void deleteCourse(int position);
 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.smartbear.R;
-import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.data.Course;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +26,7 @@ public class ShortCourseDetailsFragment extends Fragment {
     @BindView(R.id.description)
     TextView description;
 
-    public static ShortCourseDetailsFragment newInstance(CourseListItem course) {
+    public static ShortCourseDetailsFragment newInstance(Course course) {
         ShortCourseDetailsFragment fragment = new ShortCourseDetailsFragment();
 
         Bundle args = new Bundle();
@@ -41,11 +41,11 @@ public class ShortCourseDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_short_course_details, container, false);
         ButterKnife.bind(this, view);
 
-        CourseListItem course = (CourseListItem) getArguments().getSerializable("COURSE");
+        Course course = (Course) getArguments().getSerializable("COURSE");
 //        CourseInfo courseInfo = course.
-        lecturer.setText(course.getCourseName());
-        numberOfLessons.setText(course.getCourseLogoId());
-        description.setText(course.getCourseName());
+        lecturer.setText(course.getName());
+        numberOfLessons.setText(course.getCourseId());
+        description.setText(course.getName());
 
         return view;
     }

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_details.CourseDetailsFragment;
-import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.data.Course;
 import com.example.android.smartbear.courses.holder.CourseListViewHolder;
 import com.example.android.smartbear.database.CourseManager;
 import com.example.android.smartbear.database.CourseManagerFirebase;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 
 public class CourseListAdapter extends RecyclerView.Adapter {
-    private List<CourseListItem> courseList;
+    private List<Course> courseList;
     private FragmentManager fragmentManager;
 
     public CourseListAdapter(FragmentManager fragmentManager) {
@@ -36,8 +36,8 @@ public class CourseListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        ((CourseListViewHolder) holder).courseLogo.setImageResource(courseList.get(position).getCourseLogoId());
-        ((CourseListViewHolder) holder).nameOfCourse.setText(courseList.get(position).getCourseName());
+        ((CourseListViewHolder) holder).courseLogo.setImageResource(courseList.get(position).getCourseId());
+        ((CourseListViewHolder) holder).nameOfCourse.setText(courseList.get(position).getName());
         ((CourseListViewHolder) holder).details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +76,7 @@ public class CourseListAdapter extends RecyclerView.Adapter {
         courseManager.deleteCourse(courseList.get(position), position);
     }
 
-    public void set(List<CourseListItem> courses) {
+    public void set(List<Course> courses) {
         courseList = courses;
         notifyDataSetChanged();
     }

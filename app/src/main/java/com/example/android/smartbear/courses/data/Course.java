@@ -3,18 +3,20 @@ package com.example.android.smartbear.courses.data;
 import com.example.android.smartbear.CourseInfo;
 import com.example.android.smartbear.lessons.data.Lesson;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by parsh on 19.11.2017.
+ * Created by Samsung on 26.10.2017.
  */
 
-public class Course {
+public class Course implements Serializable {
 
     private int CourseID;
     private CourseInfo courseInfo;
     private String Name;
     private List<Lesson> Lessons;
+
 
     public Course() {
     }
@@ -27,27 +29,38 @@ public class Course {
         this.courseInfo = courseInfo;
     }
 
-    public int getCourseId() {
-        return CourseID;
+
+    public Course(int courseLogo, String Name) {
+        this.CourseID = courseLogo;
+        this.Name = Name;
     }
 
-    public void setCourseId(int CourseID) {
-        this.CourseID = CourseID;
+    public Course(int courseLogo, String Name, List<Lesson> lessons) {
+        this.CourseID = courseLogo;
+        this.Name = Name;
+        this.Lessons = lessons;
+    }
+
+    public int getCourseId() {
+        return CourseID;
     }
 
     public String getName() {
         return Name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
-    }
-
     public List<Lesson> getLessons() {
         return Lessons;
     }
+    public void setCourseId(int courseId) {
+        this.CourseID = courseId;
+    }
 
-    public void setLessons(List<Lesson> Lessons) {
-        this.Lessons = Lessons;
+    public void setName(String name) {
+        this.Name = name;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.Lessons = lessons;
     }
 }

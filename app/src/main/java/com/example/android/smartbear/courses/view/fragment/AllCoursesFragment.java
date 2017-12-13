@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.courses.adapter.AllCourseListAdapter;
-import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.data.Course;
 import com.example.android.smartbear.courses.presenter.AllCoursesPresenter;
 import com.example.android.smartbear.courses.view.CourseView;
 
@@ -36,7 +36,7 @@ public class AllCoursesFragment extends Fragment implements CourseView {
     @BindView(R.id.no_courses_tv)
     TextView noCoursesTextView;
 
-    private List<CourseListItem> courses;
+    private List<Course> courses;
 
     private AllCoursesPresenter presenter;
     private AllCourseListAdapter adapter;
@@ -93,7 +93,7 @@ public class AllCoursesFragment extends Fragment implements CourseView {
     }
 
     @Override
-    public void refreshData(List<CourseListItem> courses) {
+    public void refreshData(List<Course> courses) {
         adapter.set(courses);
         if (courses == null || courses.isEmpty()) {
             noCoursesTextView.setVisibility(View.VISIBLE);
@@ -112,7 +112,7 @@ public class AllCoursesFragment extends Fragment implements CourseView {
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = new AllCourseListAdapter(getActivity().getSupportFragmentManager());
-        List<CourseListItem> courseList = presenter.getCourses();
+        List<Course> courseList = presenter.getCourses();
         if (courseList == null || courseList.isEmpty()) {
             noCoursesTextView.setVisibility(View.VISIBLE);
         } else {

@@ -1,6 +1,5 @@
 package com.example.android.smartbear.courses.adapter;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.smartbear.R;
-import com.example.android.smartbear.course_details.CourseDetailsFragment;
 import com.example.android.smartbear.course_details.ShortCourseDetailsFragment;
-import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.data.Course;
 import com.example.android.smartbear.courses.holder.AllCourseListViewHolder;
 import com.example.android.smartbear.database.CourseManager;
 import com.example.android.smartbear.database.CourseManagerFirebase;
@@ -23,7 +21,7 @@ import java.util.List;
  */
 
 public class AllCourseListAdapter extends RecyclerView.Adapter {
-    private List<CourseListItem> courseList;
+    private List<Course> courseList;
     private FragmentManager fragmentManager;
 
     public AllCourseListAdapter(FragmentManager fragmentManager) {
@@ -38,8 +36,8 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        ((AllCourseListViewHolder) holder).courseLogo.setImageResource(courseList.get(position).getCourseLogoId());
-        ((AllCourseListViewHolder) holder).nameOfCourse.setText(courseList.get(position).getCourseName());
+        ((AllCourseListViewHolder) holder).courseLogo.setImageResource(courseList.get(position).getCourseId());
+        ((AllCourseListViewHolder) holder).nameOfCourse.setText(courseList.get(position).getName());
         ((AllCourseListViewHolder) holder).details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +72,7 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
                 .commit();
     }
 
-    public void set(List<CourseListItem> courses) {
+    public void set(List<Course> courses) {
         courseList = courses;
         notifyDataSetChanged();
     }
