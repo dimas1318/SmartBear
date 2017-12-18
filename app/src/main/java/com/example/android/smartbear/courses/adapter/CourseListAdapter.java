@@ -1,11 +1,13 @@
 package com.example.android.smartbear.courses.adapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_details.CourseDetailsFragment;
@@ -23,9 +25,15 @@ import java.util.List;
 public class CourseListAdapter extends RecyclerView.Adapter {
     private List<Course> courseList;
     private FragmentManager fragmentManager;
+    private Context context;
 
     public CourseListAdapter(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
+    }
+
+    public CourseListAdapter(FragmentManager fragmentManager, Context context) {
+        this.fragmentManager = fragmentManager;
+        this.context = context;
     }
 
     @Override
@@ -48,6 +56,7 @@ public class CourseListAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 deleteCourseFromList(position);
+                Toast.makeText(context, "Course was deleted from your course list", Toast.LENGTH_LONG).show();
             }
         });
     }

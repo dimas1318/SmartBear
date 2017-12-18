@@ -18,6 +18,7 @@ import com.example.android.smartbear.R;
 import com.example.android.smartbear.courses.adapter.AllCourseListAdapter;
 import com.example.android.smartbear.courses.data.Course;
 import com.example.android.smartbear.courses.presenter.AllCoursesPresenter;
+import com.example.android.smartbear.courses.presenter.CoursePresenter;
 import com.example.android.smartbear.courses.view.CourseView;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class AllCoursesFragment extends Fragment implements CourseView {
 
     private List<Course> courses;
 
-    private AllCoursesPresenter presenter;
+    private AllCoursesPresenter allCoursesPresenter;
     private AllCourseListAdapter adapter;
 
     public static AllCoursesFragment newInstance() {
@@ -56,8 +57,7 @@ public class AllCoursesFragment extends Fragment implements CourseView {
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
 
-        presenter = new AllCoursesPresenter();
-
+        allCoursesPresenter = new AllCoursesPresenter();
         return view;
     }
 
@@ -86,7 +86,7 @@ public class AllCoursesFragment extends Fragment implements CourseView {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                presenter.requestSearch(newText);
+                allCoursesPresenter.requestSearch(newText);
                 return false;
             }
         });
@@ -111,8 +111,8 @@ public class AllCoursesFragment extends Fragment implements CourseView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new AllCourseListAdapter(getActivity().getSupportFragmentManager());
-        List<Course> courseList = presenter.getCourses();
+        adapter = new AllCourseListAdapter(getActivity().getSupportFragmentManager(), getContext());
+        List<Course> courseList = allCoursesPresenter.getCourses();
         if (courseList == null || courseList.isEmpty()) {
             noCoursesTextView.setVisibility(View.VISIBLE);
         } else {
@@ -121,6 +121,6 @@ public class AllCoursesFragment extends Fragment implements CourseView {
         adapter.set(courseList);
         recyclerView.setAdapter(adapter);
 
-        presenter.setView(this);
+        allCoursesPresenter.setView(this);
     }
 }

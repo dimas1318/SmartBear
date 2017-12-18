@@ -112,7 +112,7 @@ public class CourseFragment extends Fragment implements CourseView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new CourseListAdapter(getActivity().getSupportFragmentManager());
+        adapter = new CourseListAdapter(getActivity().getSupportFragmentManager(), getContext());
         List<Course> courseList = presenter.getCourses();
         if (courseList == null || courseList.isEmpty()) {
             noCoursesTextView.setVisibility(View.VISIBLE);

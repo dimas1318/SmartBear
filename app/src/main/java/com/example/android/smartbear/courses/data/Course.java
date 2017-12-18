@@ -55,6 +55,7 @@ public class Course implements Serializable {
         return Name;
     }
 
+
     public List<Lesson> getLessons() {
         return Lessons;
     }
@@ -69,4 +70,21 @@ public class Course implements Serializable {
     public void setLessons(List<Lesson> lessons) {
         this.Lessons = lessons;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Course course = (Course) o;
+
+        return Name.equals(course.Name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Name.hashCode();
+    }
+
 }

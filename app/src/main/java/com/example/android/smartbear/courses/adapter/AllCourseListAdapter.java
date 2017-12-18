@@ -1,15 +1,18 @@
 package com.example.android.smartbear.courses.adapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_details.ShortCourseDetailsFragment;
 import com.example.android.smartbear.courses.data.Course;
+import com.example.android.smartbear.courses.data.CourseListCache;
 import com.example.android.smartbear.courses.holder.AllCourseListViewHolder;
 import com.example.android.smartbear.database.CourseManager;
 import com.example.android.smartbear.database.CourseManagerFirebase;
@@ -21,12 +24,21 @@ import java.util.List;
  */
 
 public class AllCourseListAdapter extends RecyclerView.Adapter {
-    private List<Course> courseList;
+    private List<Course> allCourseList;
     private FragmentManager fragmentManager;
+    private Context context;
+
+    private List<Course> userCourseList = CourseListCache.getInstance().getCourseList();
 
     public AllCourseListAdapter(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
+
+    public AllCourseListAdapter(FragmentManager fragmentManager, Context context) {
+        this.fragmentManager = fragmentManager;
+        this.context = context;
+    }
+
 
     @Override
     public AllCourseListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,8 +48,8 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        ((AllCourseListViewHolder) holder).courseLogo.setImageResource(courseList.get(position).getCourseId());
-        ((AllCourseListViewHolder) holder).nameOfCourse.setText(courseList.get(position).getName());
+        ((AllCourseListViewHolder) holder).courseLogo.setImageResource(allCourseList.get(position).getCourseId());
+        ((AllCourseListViewHolder) holder).nameOfCourse.setText(allCourseList.get(position).getName());
         ((AllCourseListViewHolder) holder).details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,23 +60,28 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View v) {
                 addCourseToList(position);
+                Toast.makeText(context, "Course was added to your course list", Toast.LENGTH_LONG).show();
             }
         });
+        if (userCourseList.contains(allCourseList.get(position))) {
+            ((AllCourseListViewHolder) holder).addCourseButton.setText("You have already added this course");
+            ((AllCourseListViewHolder) holder).addCourseButton.setClickable(false);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return courseList.size();
+        return allCourseList.size();
     }
 
     private void addCourseToList(int position) {
         CourseManager courseManager = new CourseManagerFirebase();
-        courseManager.addCourse(courseList.get(position));
+        courseManager.addCourse(allCourseList.get(position));
     }
 
     public void showCourseDetails(int position) {
         FragmentManager fm = fragmentManager;
-        Fragment fragment = ShortCourseDetailsFragment.newInstance(courseList.get(position));
+        Fragment fragment = ShortCourseDetailsFragment.newInstance(allCourseList.get(position));
         fm
                 .beginTransaction()
                 .addToBackStack(null)
@@ -73,7 +90,7 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
     }
 
     public void set(List<Course> courses) {
-        courseList = courses;
+        allCourseList = courses;
         notifyDataSetChanged();
     }
 }
