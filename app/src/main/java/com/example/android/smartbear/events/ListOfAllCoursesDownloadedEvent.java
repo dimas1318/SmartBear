@@ -1,6 +1,6 @@
 package com.example.android.smartbear.events;
 
-import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.data.Course;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import java.util.List;
  */
 
 public class ListOfAllCoursesDownloadedEvent {
-    private final List<CourseListItem> courses;
+    private final List<Course> courses;
 
-    public ListOfAllCoursesDownloadedEvent(List<CourseListItem> courses) {
+    public ListOfAllCoursesDownloadedEvent(List<Course> courses) {
         this.courses = courses;
     }
 
-    public List<CourseListItem> getCourses() {
+    public List<Course> getCourses() {
         return courses;
     }
 }

@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.courses.adapter.CourseListAdapter;
-import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.data.Course;
 import com.example.android.smartbear.courses.presenter.CoursePresenter;
 import com.example.android.smartbear.courses.view.CourseView;
 
@@ -94,7 +94,7 @@ public class CourseFragment extends Fragment implements CourseView {
     }
 
     @Override
-    public void refreshData(List<CourseListItem> courses) {
+    public void refreshData(List<Course> courses) {
         adapter.set(courses);
         if (courses == null || courses.isEmpty()) {
             noCoursesTextView.setVisibility(View.VISIBLE);
@@ -112,8 +112,8 @@ public class CourseFragment extends Fragment implements CourseView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new CourseListAdapter(getActivity().getSupportFragmentManager());
-        List<CourseListItem> courseList = presenter.getCourses();
+        adapter = new CourseListAdapter(getActivity().getSupportFragmentManager(), getContext());
+        List<Course> courseList = presenter.getCourses();
         if (courseList == null || courseList.isEmpty()) {
             noCoursesTextView.setVisibility(View.VISIBLE);
         } else {

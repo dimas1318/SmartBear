@@ -1,11 +1,10 @@
 package com.example.android.smartbear.database;
 
 import com.example.android.smartbear.AvailableCourse;
-import com.example.android.smartbear.Course;
 import com.example.android.smartbear.MainActivity;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.Student;
-import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.data.Course;
 import com.example.android.smartbear.events.ListOfAllCoursesDownloadedEvent;
 import com.example.android.smartbear.events.ListOfCoursesDownloadedEvent;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,8 +34,8 @@ public class CourseManagerFirebase implements CourseManager {
     }
 
     @Override
-    public List<CourseListItem> getUserCourses() {
-        final List<CourseListItem> studentCourseListItems = new ArrayList<>();
+    public List<Course> getUserCourses() {
+        final List<Course> studentCourses = new ArrayList<>();
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -59,11 +58,11 @@ public class CourseManagerFirebase implements CourseManager {
                                         Course course = ds.getValue(Course.class);
                                         for (AvailableCourse availableCourse : student.getAvailableCourses()) {
                                             if (availableCourse != null && availableCourse.getCourseId() == course.getCourseId()) {
-                                                studentCourseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
+                                                studentCourses.add(new Course(R.drawable.logo, course.getName(), course.getLessons()));
                                                 break;
                                             }
                                         }
-                                        bus.post(new ListOfCoursesDownloadedEvent(studentCourseListItems));
+                                        bus.post(new ListOfCoursesDownloadedEvent(studentCourses));
                                     }
                                 }
 
@@ -84,12 +83,12 @@ public class CourseManagerFirebase implements CourseManager {
             }
         });
 
-        return studentCourseListItems;
+        return studentCourses;
     }
 
     @Override
-    public List<CourseListItem> getAllCourses() {
-        final List<CourseListItem> courseListItems = new ArrayList<>();
+    public List<Course> getAllCourses() {
+        final List<Course> courseListItems = new ArrayList<>();
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference referenceCourses = firebaseDatabase.getReference("Courses");
@@ -102,7 +101,7 @@ public class CourseManagerFirebase implements CourseManager {
                 }
 
                 for (Course course : courses) {
-                    courseListItems.add(new CourseListItem(R.drawable.logo, course.getName(), course.getLessons()));
+                    courseListItems.add(new Course(R.drawable.logo, course.getName(), course.getLessons(), course.getCourseInfo()));
                 }
 
                 bus.post(new ListOfAllCoursesDownloadedEvent(courseListItems));
@@ -117,12 +116,12 @@ public class CourseManagerFirebase implements CourseManager {
     }
 
     @Override
-    public void deleteCourse(final CourseListItem course, final int position) {
+    public void deleteCourse(final Course course, final int position) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         final String userID = user.getUid();
 
-        final String name = course.getCourseName();
+        final String name = course.getName();
 
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference reference = firebaseDatabase.getReference("Courses");
@@ -134,7 +133,7 @@ public class CourseManagerFirebase implements CourseManager {
                     if (course.getName().equals(name)) {
                         final int id = course.getCourseId();
 
-                        final DatabaseReference studentReference = firebaseDatabase.getReference("Students");
+                    final DatabaseReference studentReference = firebaseDatabase.getReference("Students");
                         studentReference.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -191,12 +190,12 @@ public class CourseManagerFirebase implements CourseManager {
 
 
     @Override
-    public void addCourse(CourseListItem course) {
+    public void addCourse(Course course) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         final String userID = user.getUid();
 
-        final String name = course.getCourseName();
+        final String name = course.getName();
 
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference reference = firebaseDatabase.getReference("Courses");

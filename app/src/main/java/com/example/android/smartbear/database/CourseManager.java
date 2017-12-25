@@ -1,6 +1,6 @@
 package com.example.android.smartbear.database;
 
-import com.example.android.smartbear.courses.data.CourseListItem;
+import com.example.android.smartbear.courses.data.Course;
 
 import java.util.List;
 
@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface CourseManager {
 
-   List<CourseListItem> getUserCourses();
+   List<Course> getUserCourses();
 
-   List<CourseListItem> getAllCourses();
+   List<Course> getAllCourses();
 
-   void deleteCourse(CourseListItem course, int position);
+   void deleteCourse(Course course, int position);
 
-   void addCourse(CourseListItem course);
+   void addCourse(Course course);
 }

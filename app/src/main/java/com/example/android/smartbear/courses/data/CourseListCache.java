@@ -8,9 +8,9 @@ import java.util.List;
  */
 
 public class CourseListCache {
-    private List<CourseListItem> courseList = new ArrayList<>();
+    private List<Course> courseList = new ArrayList<>();
 
-    public List<CourseListItem> getCourseList() {
+    public List<Course> getCourseList() {
         return courseList;
     }
 
