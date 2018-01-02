@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,8 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.smartbear.database.DataBaseManager;
 import com.example.android.smartbear.database.DatabaseManagerFirebase;
+import com.example.android.smartbear.navigation.Navigator;
 import com.example.android.smartbear.session.SessionManager;
 import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.validator.UserDataValidator;
@@ -21,12 +20,9 @@ import com.example.android.smartbear.validator.exception.NotValidDataException;
 import com.example.android.smartbear.validator.exception.TooLongTextException;
 import com.example.android.smartbear.validator.exception.TooShortTextException;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +31,7 @@ import butterknife.ButterKnife;
  * Created by parsh on 16.10.2017.
  */
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends BaseActivity {
     private static final String TAG = "SignupActivity";
 
     private SessionManager session;
@@ -65,6 +61,8 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
+
+        navigator = new Navigator();
 
         session = new SessionManagerImpl(getApplicationContext());
 
@@ -141,10 +139,11 @@ public class SignupActivity extends AppCompatActivity {
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
 
-        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-        startActivity(intent);
-
-        finish();
+//        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+//        startActivity(intent);
+//
+//        finish();
+        navigator.navigateToLoginActivity(this);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
 //        setResult(RESULT_OK, null);

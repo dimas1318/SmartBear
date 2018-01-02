@@ -2,19 +2,19 @@ package com.example.android.smartbear.material;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.smartbear.BaseFragment;
 import com.example.android.smartbear.R;
 
 /**
  * Created by dmitryparshin on 11.12.17.
  */
 
-public class TextCourseMaterialFragment extends Fragment {
+public class TextCourseMaterialFragment extends BaseFragment {
 
     private static final String TAG = TextCourseMaterialFragment.class.getName();
 

@@ -71,6 +71,7 @@ public class CourseListAdapter extends RecyclerView.Adapter {
     }
 
     private void showCourseDetails(int position) {
+
         FragmentManager fm = fragmentManager;
         Fragment fragment = CourseDetailsFragment.newInstance(courseList.get(position));
         fm

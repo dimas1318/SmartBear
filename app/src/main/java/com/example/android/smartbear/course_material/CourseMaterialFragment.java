@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.smartbear.BaseFragment;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.lessons.data.Material;
 import com.example.android.smartbear.material.TextCourseMaterialFragment;
@@ -33,7 +34,7 @@ import java.util.List;
  * Created by parsh on 02.12.2017.
  */
 
-public class CourseMaterialFragment extends Fragment {
+public class CourseMaterialFragment extends BaseFragment {
 
     private static final String TAG = CourseMaterialFragment.class.getName();
 
