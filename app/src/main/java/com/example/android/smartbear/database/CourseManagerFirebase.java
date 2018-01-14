@@ -61,7 +61,18 @@ public class CourseManagerFirebase implements CourseManager {
                                         for (AvailableCourse availableCourse : student.getAvailableCourses()) {
                                             if (availableCourse != null && availableCourse.getCourseId() == course.getCourseId()) {
                                                 if (!studentCourses.contains(course)) {
-                                                    studentCourses.add(new Course(R.drawable.logo, course.getName(), course.getLessons()));
+                                                    if (course.getName().equals("DesignPatterns")) {
+                                                        studentCourses.add(new Course(R.drawable.design_patterns, course.getName(), course.getLessons()));
+                                                    }
+                                                    if (course.getName().equals("Java")) {
+                                                        studentCourses.add(new Course(R.drawable.java, course.getName(), course.getLessons()));
+                                                    }
+                                                    if (course.getName().equals("Math")) {
+                                                        studentCourses.add(new Course(R.drawable.math, course.getName(), course.getLessons()));
+                                                    }
+                                                    if (course.getName().equals("Python")) {
+                                                        studentCourses.add(new Course(R.drawable.python, course.getName(), course.getLessons()));
+                                                    }
                                                 }
                                                 bus.post(new ListOfCoursesDownloadedEvent(studentCourses));
                                                 break;
@@ -106,7 +117,18 @@ public class CourseManagerFirebase implements CourseManager {
                 }
 
                 for (Course course : courses) {
-                    courseListItems.add(new Course(R.drawable.logo, course.getName(), course.getLessons(), course.getCourseInfo()));
+                    if (course.getName().equals("Math")) {
+                        courseListItems.add(new Course(R.drawable.math, course.getName(), course.getLessons(), course.getCourseInfo()));
+                    }
+                    if (course.getName().equals("Java")) {
+                        courseListItems.add(new Course(R.drawable.java, course.getName(), course.getLessons(), course.getCourseInfo()));
+                    }
+                    if (course.getName().equals("Python")) {
+                        courseListItems.add(new Course(R.drawable.python, course.getName(), course.getLessons(), course.getCourseInfo()));
+                    }
+                    if (course.getName().equals("Design patterns")) {
+                        courseListItems.add(new Course(R.drawable.design_patterns, course.getName(), course.getLessons(), course.getCourseInfo()));
+                    }
                 }
 
                 bus.post(new ListOfAllCoursesDownloadedEvent(courseListItems));
