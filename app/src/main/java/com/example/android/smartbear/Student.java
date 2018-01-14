@@ -7,30 +7,30 @@ import java.util.List;
  */
 
 public class Student {
-    private String StudentID;
-    private List<AvailableCourse> AvailableCourses;
+    private String studentId;
+    private List<AvailableCourse> availableCourses;
 
     public Student() {
     }
 
-    public Student(String studentID, List<AvailableCourse> availableCourses) {
-        StudentID = studentID;
-        AvailableCourses = availableCourses;
+    public Student(String studentId, List<AvailableCourse> availableCourses) {
+        this.studentId = studentId;
+        this.availableCourses = availableCourses;
     }
 
     public String getStudentId() {
-        return StudentID;
+        return studentId;
     }
 
     public void setStudentId(String StudentID) {
-        this.StudentID = StudentID;
+        this.studentId = StudentID;
     }
 
     public List<AvailableCourse> getAvailableCourses() {
-        return AvailableCourses;
+        return availableCourses;
     }
 
-    public void setAvailableCourses(List<AvailableCourse> AvailableCourses) {
-        this.AvailableCourses = AvailableCourses;
+    public void setAvailableCourses(List<AvailableCourse> availableCourses) {
+        this.availableCourses = availableCourses;
     }
 }
