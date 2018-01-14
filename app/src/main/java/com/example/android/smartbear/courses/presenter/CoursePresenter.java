@@ -59,11 +59,16 @@ public class CoursePresenter {
 
     @Subscribe
     public void refreshData(ListOfCoursesDownloadedEvent event) {
-        view.refreshData(event.getCourses());
+        courses = event.getCourses();
+        view.refreshData(courses);
     }
 
     @Subscribe
     public void deleteCourse(CourseDeletedEvent event) {
-        view.deleteCourse(event.getPosition());
+        int position = event.getPosition();
+        if (courses != null && courses.size() > position) {
+            courses.remove(position);
+            view.deleteCourse(position);
+        }
     }
 }

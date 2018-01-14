@@ -17,6 +17,7 @@ import com.example.android.smartbear.courses.holder.AllCourseListViewHolder;
 import com.example.android.smartbear.database.CourseManager;
 import com.example.android.smartbear.database.CourseManagerFirebase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,13 +31,14 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
 
     private List<Course> userCourseList = CourseListCache.getInstance().getCourseList();
 
-    public AllCourseListAdapter(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
-    }
+//    public AllCourseListAdapter(FragmentManager fragmentManager) {
+//        this.fragmentManager = fragmentManager;
+//    }
 
     public AllCourseListAdapter(FragmentManager fragmentManager, Context context) {
         this.fragmentManager = fragmentManager;
         this.context = context;
+        this.allCourseList = new ArrayList<>();
     }
 
 
@@ -90,7 +92,11 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
     }
 
     public void set(List<Course> courses) {
-        allCourseList = courses;
-        notifyDataSetChanged();
+        // first remove
+        if (allCourseList.size() > 0)
+            notifyItemRangeRemoved(0, allCourseList.size());
+        // than set new data
+        allCourseList = new ArrayList<>(courses);
+        notifyItemRangeInserted(0, allCourseList.size());
     }
 }

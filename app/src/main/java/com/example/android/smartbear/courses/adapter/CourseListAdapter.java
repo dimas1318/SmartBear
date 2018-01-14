@@ -16,6 +16,7 @@ import com.example.android.smartbear.courses.holder.CourseListViewHolder;
 import com.example.android.smartbear.database.CourseManager;
 import com.example.android.smartbear.database.CourseManagerFirebase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,13 +28,15 @@ public class CourseListAdapter extends RecyclerView.Adapter {
     private FragmentManager fragmentManager;
     private Context context;
 
-    public CourseListAdapter(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
-    }
+//    public CourseListAdapter(FragmentManager fragmentManager) {
+//        this.fragmentManager = fragmentManager;
+//        this.courseList = new ArrayList<>();
+//    }
 
     public CourseListAdapter(FragmentManager fragmentManager, Context context) {
         this.fragmentManager = fragmentManager;
         this.context = context;
+        this.courseList = new ArrayList<>();
     }
 
     @Override
@@ -56,18 +59,13 @@ public class CourseListAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 deleteCourseFromList(position);
-                Toast.makeText(context, "Course was deleted from your course list", Toast.LENGTH_LONG).show();
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        if (courseList == null) {
-            return 0;
-        } else {
-            return courseList.size();
-        }
+        return courseList.size();
     }
 
     private void showCourseDetails(int position) {
@@ -87,12 +85,18 @@ public class CourseListAdapter extends RecyclerView.Adapter {
     }
 
     public void set(List<Course> courses) {
-        courseList = courses;
-        notifyDataSetChanged();
+        // first remove
+        if (courseList.size() > 0)
+            notifyItemRangeRemoved(0, courseList.size());
+        // than set new data
+        courseList = new ArrayList<>(courses);
+        notifyItemRangeInserted(0, courseList.size());
     }
 
     public void deleteCourse(int position) {
         courseList.remove(position);
-        notifyDataSetChanged();
+        notifyItemRemoved(position);
+
+        Toast.makeText(context, "Course was deleted from your course list", Toast.LENGTH_LONG).show();
     }
 }

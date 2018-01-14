@@ -10,6 +10,7 @@ public class Material implements Serializable {
     private String Name;
     private String Type;
     private String Reference;
+    private int Order;
 
     public Material() {
     }
