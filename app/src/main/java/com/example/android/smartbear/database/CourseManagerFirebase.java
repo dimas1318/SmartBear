@@ -53,7 +53,7 @@ public class CourseManagerFirebase implements CourseManager {
                     if (student.getStudentId().equals(userID)) {
                         if (student.getAvailableCourses() != null) {
                             final DatabaseReference coursesReference = firebaseDatabase.getReference("Courses");
-                            coursesReference.addValueEventListener(new ValueEventListener() {
+                            coursesReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -61,7 +61,7 @@ public class CourseManagerFirebase implements CourseManager {
                                         for (AvailableCourse availableCourse : student.getAvailableCourses()) {
                                             if (availableCourse != null && availableCourse.getCourseId() == course.getCourseId()) {
                                                 if (!studentCourses.contains(course)) {
-                                                    if (course.getName().equals("DesignPatterns")) {
+                                                    if (course.getName().equals("Design patterns")) {
                                                         studentCourses.add(new Course(R.drawable.design_patterns, course.getName(), course.getLessons()));
                                                     }
                                                     if (course.getName().equals("Java")) {
@@ -98,7 +98,6 @@ public class CourseManagerFirebase implements CourseManager {
 
             }
         });
-
         return studentCourses;
     }
 
@@ -108,7 +107,7 @@ public class CourseManagerFirebase implements CourseManager {
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference referenceCourses = firebaseDatabase.getReference("Courses");
-        referenceCourses.addValueEventListener(new ValueEventListener() {
+        referenceCourses.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Course> courses = new ArrayList<>();
@@ -138,7 +137,6 @@ public class CourseManagerFirebase implements CourseManager {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
         return courseListItems;
     }
 
@@ -152,16 +150,17 @@ public class CourseManagerFirebase implements CourseManager {
 
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference reference = firebaseDatabase.getReference("Courses");
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    Course course = ds.getValue(Course.class);
-                    if (course.getName().equals(name)) {
-                        final int id = course.getCourseId();
+                    Course currentCourse = ds.getValue(Course.class);
+
+                    if (currentCourse.getName().equals(name)) {
+                        final int id = currentCourse.getCourseId();
 
                         final DatabaseReference studentReference = firebaseDatabase.getReference("Students");
-                            studentReference.addValueEventListener(new ValueEventListener() {
+                            studentReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for(DataSnapshot ds : dataSnapshot.getChildren()){
@@ -182,7 +181,7 @@ public class CourseManagerFirebase implements CourseManager {
                                                         }
                                                         for (int i = 0; i < cs.size(); i++) {
                                                             Map<String, Integer> value = new HashMap<>();
-                                                            value.put("CourseID", cs.get(0).getCourseId());
+                                                            value.put("CourseID", cs.get(i).getCourseId());
                                                             studentReference.child(ds.getKey()).child("availableCourses")
                                                                     .child(String.valueOf(i))
                                                                     .setValue(value);
@@ -264,23 +263,13 @@ public class CourseManagerFirebase implements CourseManager {
                                                     return;
                                                 }
                                             }
-                                        } else {
-                                            Map<String, Integer> value = new HashMap<>();
-                                            value.put("CourseID", id);
-                                            studentReference.child(ds.getKey()).child("availableCourses").child(String.valueOf(0))
-                                                    .setValue(value);
-                                            return;
                                         }
-                                        for(DataSnapshot availableCoursesDs : ds.getChildren()) {
-                                            if (availableCoursesDs.getKey().equals("availableCourses")) {
-                                                Map<String, Integer> value = new HashMap<>();
-                                                value.put("CourseID", id);
-                                                studentReference.child(ds.getKey()).child(availableCoursesDs.getKey())
-                                                        .child(String.valueOf(student.getAvailableCourses().size()))
-                                                        .setValue(value);
-                                                return;
-                                            }
-                                        }
+                                        Map<String, Integer> value = new HashMap<>();
+                                        value.put("CourseID", id);
+                                        int index = student.getAvailableCourses() == null ? 0 : student.getAvailableCourses().size();
+                                        studentReference.child(ds.getKey()).child("availableCourses").child(String.valueOf(index))
+                                                .setValue(value);
+                                        return;
                                     }
                                 }
                             }

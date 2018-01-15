@@ -6,6 +6,7 @@ import com.example.android.smartbear.courses.view.CourseView;
 import com.example.android.smartbear.database.CourseManager;
 import com.example.android.smartbear.database.CourseManagerFirebase;
 import com.example.android.smartbear.events.CourseDeletedEvent;
+import com.example.android.smartbear.events.CourseStateChangedEvent;
 import com.example.android.smartbear.events.ListOfCoursesDownloadedEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -70,5 +71,9 @@ public class CoursePresenter {
             courses.remove(position);
             view.deleteCourse(position);
         }
+    }
+
+    public void changeCourseState() {
+        bus.post(new CourseStateChangedEvent());
     }
 }

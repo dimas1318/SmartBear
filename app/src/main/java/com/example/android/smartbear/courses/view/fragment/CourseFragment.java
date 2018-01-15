@@ -101,11 +101,13 @@ public class CourseFragment extends BaseFragment implements CourseView {
         } else {
             noCoursesTextView.setVisibility(View.GONE);
         }
+        presenter.changeCourseState();
     }
 
     @Override
     public void deleteCourse(int position) {
         adapter.deleteCourse(position);
+        presenter.changeCourseState();
     }
 
     private void initView() {

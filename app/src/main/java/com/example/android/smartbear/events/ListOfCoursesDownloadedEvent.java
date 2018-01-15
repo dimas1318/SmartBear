@@ -14,6 +14,7 @@ public class ListOfCoursesDownloadedEvent {
 
     public ListOfCoursesDownloadedEvent(List<Course> courses) {
         this.courses = courses;
+        CourseListCache.getInstance().getCourseList().clear();
         CourseListCache.getInstance().getCourseList().addAll(courses);
     }
 

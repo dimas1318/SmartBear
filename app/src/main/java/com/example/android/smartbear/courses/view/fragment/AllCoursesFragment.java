@@ -122,4 +122,8 @@ public class AllCoursesFragment extends BaseFragment implements CourseView {
 
         allCoursesPresenter.setView(this);
     }
+
+    public void update() {
+        adapter.notifyDataSetChanged();
+    }
 }
