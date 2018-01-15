@@ -1,5 +1,7 @@
 package com.example.android.smartbear.course_material;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -113,6 +115,9 @@ public class CourseMaterialFragment extends BaseFragment {
                                     Toast.makeText(getContext(), "Download failed!", Toast.LENGTH_SHORT).show();
                                 }
                             });
+                        } else if (materialType.getText().toString().equalsIgnoreCase("video")) {
+                            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(materialReference.getText().toString()));
+                            startActivity(webIntent);
                         }
                     }
                 });
