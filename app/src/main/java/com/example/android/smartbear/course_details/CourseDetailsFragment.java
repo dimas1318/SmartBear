@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.android.smartbear.BaseFragment;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_material.CourseMaterialFragment;
 import com.example.android.smartbear.courses.data.Course;
@@ -18,7 +19,7 @@ import com.example.android.smartbear.lessons.data.Lesson;
  * Created by Samsung on 26.10.2017.
  */
 
-public class CourseDetailsFragment extends Fragment {
+public class CourseDetailsFragment extends BaseFragment {
 
     public static CourseDetailsFragment newInstance(Course course) {
         CourseDetailsFragment fragment = new CourseDetailsFragment();

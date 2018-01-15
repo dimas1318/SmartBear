@@ -2,7 +2,6 @@ package com.example.android.smartbear.courses.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.example.android.smartbear.BaseFragment;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.courses.adapter.CourseListAdapter;
 import com.example.android.smartbear.courses.data.Course;
@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
  * Created by parsh on 12.10.2017.
  */
 
-public class CourseFragment extends Fragment implements CourseView {
+public class CourseFragment extends BaseFragment implements CourseView {
 
     @BindView(R.id.rv)
     RecyclerView recyclerView;

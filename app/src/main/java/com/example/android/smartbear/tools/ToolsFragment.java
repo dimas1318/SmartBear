@@ -9,18 +9,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toolbar;
 
+import com.example.android.smartbear.BaseFragment;
 import com.example.android.smartbear.R;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Created by parsh on 12.10.2017.
  */
 
-public class ToolsFragment extends android.support.v4.app.Fragment {
+public class ToolsFragment extends BaseFragment {
 
     public static ToolsFragment newInstance() {
         ToolsFragment fragment = new ToolsFragment();

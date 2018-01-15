@@ -14,6 +14,7 @@ public class Course implements Serializable {
 
     private int CourseID;
     private CourseInfo CourseInfo;
+    private String CourseLogo;
     private String Name;
     private List<Lesson> Lessons;
 

@@ -1,12 +1,12 @@
 package com.example.android.smartbear.course_details;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.smartbear.BaseFragment;
 import com.example.android.smartbear.CourseInfo;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.courses.data.Course;
@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
  * Created by Samsung on 12.12.2017.
  */
 
-public class ShortCourseDetailsFragment extends Fragment {
+public class ShortCourseDetailsFragment extends BaseFragment {
 
     @BindView(R.id.lecturer)
     TextView lecturer;

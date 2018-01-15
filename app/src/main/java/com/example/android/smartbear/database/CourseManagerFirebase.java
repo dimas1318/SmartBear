@@ -5,6 +5,7 @@ import com.example.android.smartbear.MainActivity;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.Student;
 import com.example.android.smartbear.courses.data.Course;
+import com.example.android.smartbear.events.CourseDeletedEvent;
 import com.example.android.smartbear.events.ListOfAllCoursesDownloadedEvent;
 import com.example.android.smartbear.events.ListOfCoursesDownloadedEvent;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +19,7 @@ import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -58,11 +60,24 @@ public class CourseManagerFirebase implements CourseManager {
                                         Course course = ds.getValue(Course.class);
                                         for (AvailableCourse availableCourse : student.getAvailableCourses()) {
                                             if (availableCourse != null && availableCourse.getCourseId() == course.getCourseId()) {
-                                                studentCourses.add(new Course(R.drawable.logo, course.getName(), course.getLessons()));
+                                                if (!studentCourses.contains(course)) {
+                                                    if (course.getName().equals("DesignPatterns")) {
+                                                        studentCourses.add(new Course(R.drawable.design_patterns, course.getName(), course.getLessons()));
+                                                    }
+                                                    if (course.getName().equals("Java")) {
+                                                        studentCourses.add(new Course(R.drawable.java, course.getName(), course.getLessons()));
+                                                    }
+                                                    if (course.getName().equals("Math")) {
+                                                        studentCourses.add(new Course(R.drawable.math, course.getName(), course.getLessons()));
+                                                    }
+                                                    if (course.getName().equals("Python")) {
+                                                        studentCourses.add(new Course(R.drawable.python, course.getName(), course.getLessons()));
+                                                    }
+                                                }
+                                                bus.post(new ListOfCoursesDownloadedEvent(studentCourses));
                                                 break;
                                             }
                                         }
-                                        bus.post(new ListOfCoursesDownloadedEvent(studentCourses));
                                     }
                                 }
 
@@ -72,6 +87,7 @@ public class CourseManagerFirebase implements CourseManager {
                                 }
                             });
                         }
+                        bus.post(new ListOfCoursesDownloadedEvent(studentCourses));
                         return;
                     }
                 }
@@ -101,7 +117,18 @@ public class CourseManagerFirebase implements CourseManager {
                 }
 
                 for (Course course : courses) {
-                    courseListItems.add(new Course(R.drawable.logo, course.getName(), course.getLessons(), course.getCourseInfo()));
+                    if (course.getName().equals("Math")) {
+                        courseListItems.add(new Course(R.drawable.math, course.getName(), course.getLessons(), course.getCourseInfo()));
+                    }
+                    if (course.getName().equals("Java")) {
+                        courseListItems.add(new Course(R.drawable.java, course.getName(), course.getLessons(), course.getCourseInfo()));
+                    }
+                    if (course.getName().equals("Python")) {
+                        courseListItems.add(new Course(R.drawable.python, course.getName(), course.getLessons(), course.getCourseInfo()));
+                    }
+                    if (course.getName().equals("Design patterns")) {
+                        courseListItems.add(new Course(R.drawable.design_patterns, course.getName(), course.getLessons(), course.getCourseInfo()));
+                    }
                 }
 
                 bus.post(new ListOfAllCoursesDownloadedEvent(courseListItems));
@@ -133,30 +160,47 @@ public class CourseManagerFirebase implements CourseManager {
                     if (course.getName().equals(name)) {
                         final int id = course.getCourseId();
 
-                    final DatabaseReference studentReference = firebaseDatabase.getReference("Students");
-                        studentReference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for(DataSnapshot ds : dataSnapshot.getChildren()){
-                                    Student student = ds.getValue(Student.class);
-                                    if (student.getStudentId().equals(userID)) {
-                                        for(DataSnapshot availableCoursesDs : ds.getChildren()) {
-                                            for(DataSnapshot availableCourseDs : availableCoursesDs.getChildren()) {
-                                                if (availableCourseDs.getValue(AvailableCourse.class).getCourseId() == id) {
-                                                    studentReference.child(ds.getKey()).child(availableCoursesDs.getKey()).child(availableCourseDs.getKey()).removeValue();
-                                                    return;
+                        final DatabaseReference studentReference = firebaseDatabase.getReference("Students");
+                            studentReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                        Student student = ds.getValue(Student.class);
+                                        if (student.getStudentId().equals(userID)) {
+                                            for(DataSnapshot availableCoursesDs : ds.getChildren()) {
+                                                for(DataSnapshot availableCourseDs : availableCoursesDs.getChildren()) {
+                                                    if (availableCourseDs.getValue(AvailableCourse.class).getCourseId() == id) {
+                                                        studentReference.child(ds.getKey()).child(availableCoursesDs.getKey()).removeValue();//child(availableCourseDs.getKey()).removeValue();
+                                                        List<AvailableCourse> cs = student.getAvailableCourses();
+                                                        Iterator<AvailableCourse> it = cs.iterator();
+                                                        while (it.hasNext()) {
+                                                            AvailableCourse c = it.next();
+                                                            if (c.getCourseId() == id) {
+                                                                it.remove();
+                                                                break;
+                                                            }
+                                                        }
+                                                        for (int i = 0; i < cs.size(); i++) {
+                                                            Map<String, Integer> value = new HashMap<>();
+                                                            value.put("CourseID", cs.get(0).getCourseId());
+                                                            studentReference.child(ds.getKey()).child("availableCourses")
+                                                                    .child(String.valueOf(i))
+                                                                    .setValue(value);
+                                                        }
+                                                        bus.post(new CourseDeletedEvent(position));
+                                                        return;
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
-                            }
-                        });
+                                }
+                            });
                     }
                 }
             }
@@ -220,14 +264,22 @@ public class CourseManagerFirebase implements CourseManager {
                                                     return;
                                                 }
                                             }
-                                        }
-                                        for(DataSnapshot availableCoursesDs : ds.getChildren()) {
+                                        } else {
                                             Map<String, Integer> value = new HashMap<>();
                                             value.put("CourseID", id);
-                                            studentReference.child(ds.getKey()).child(availableCoursesDs.getKey())
-                                                    .child(String.valueOf(id - 1))
+                                            studentReference.child(ds.getKey()).child("availableCourses").child(String.valueOf(0))
                                                     .setValue(value);
                                             return;
+                                        }
+                                        for(DataSnapshot availableCoursesDs : ds.getChildren()) {
+                                            if (availableCoursesDs.getKey().equals("availableCourses")) {
+                                                Map<String, Integer> value = new HashMap<>();
+                                                value.put("CourseID", id);
+                                                studentReference.child(ds.getKey()).child(availableCoursesDs.getKey())
+                                                        .child(String.valueOf(student.getAvailableCourses().size()))
+                                                        .setValue(value);
+                                                return;
+                                            }
                                         }
                                     }
                                 }

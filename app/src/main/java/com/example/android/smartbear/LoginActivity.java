@@ -1,16 +1,16 @@
 package com.example.android.smartbear;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.smartbear.di.component.LoginComponent;
+import com.example.android.smartbear.navigation.Navigator;
 import com.example.android.smartbear.session.SessionManager;
 import com.example.android.smartbear.session.SessionManagerImpl;
 import com.example.android.smartbear.validator.UserDataValidator;
@@ -29,7 +29,7 @@ import butterknife.OnClick;
  * Created by parsh on 16.10.2017.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
 
+    private LoginComponent loginComponent;
 
     @BindView(R.id.input_email)
     EditText emailText;
@@ -53,12 +54,21 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        initializeInjector();
+
         ButterKnife.bind(this);
 
         emailText.setText("parshin@phystech.edu");
         passwordText.setText("12345x_x_*xYYY");
 
         session = new SessionManagerImpl(getApplicationContext());
+    }
+
+    private void initializeInjector() {
+//        this.loginComponent = DaggerLoginComponent.builder()
+//                .applicationComponent(getApplicationComponent())
+//                .build();
+        navigator = new Navigator();
     }
 
     @OnClick(R.id.btn_login)
@@ -69,11 +79,12 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.link_signup)
     public void signupLinkClick() {
-        Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+//        Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
 //        startActivityForResult(intent, REQUEST_SIGNUP);
-        startActivity(intent);
+//        startActivity(intent);
 
-        finish();
+//        finish();
+        navigator.navigateToSignupActivity(this);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
@@ -165,10 +176,11 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         loginButton.setEnabled(true);
 
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-
-        finish();
+        navigator.navigateToMainActivity(this);
+//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//        startActivity(intent);
+//
+//        finish();
     }
 
     public void onLoginFailed() {
