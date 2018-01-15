@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.android.smartbear.BaseFragment;
 import com.example.android.smartbear.R;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.ButterKnife;
 
@@ -51,5 +52,23 @@ public class ToolsFragment extends BaseFragment {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.main, menu);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (FirebaseDatabase.getInstance() != null) {
+            FirebaseDatabase.getInstance().goOnline();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(FirebaseDatabase.getInstance() != null) {
+            FirebaseDatabase.getInstance().goOffline();
+        }
     }
 }
