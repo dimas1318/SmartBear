@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.android.smartbear.BaseFragment;
 import com.example.android.smartbear.R;
+import com.example.android.smartbear.base.fragments.BaseFragment;
 import com.example.android.smartbear.course_material.CourseMaterialFragment;
 import com.example.android.smartbear.courses.data.Course;
 import com.example.android.smartbear.lessons.data.Lesson;

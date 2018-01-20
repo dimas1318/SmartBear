@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.android.smartbear.base.activities.BaseActivity;
 import com.example.android.smartbear.navigation.Navigator;
 import com.example.android.smartbear.session.SessionManager;
 import com.example.android.smartbear.session.SessionManagerImpl;

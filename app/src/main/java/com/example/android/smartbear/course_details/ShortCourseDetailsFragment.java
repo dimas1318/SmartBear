@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.android.smartbear.BaseFragment;
 import com.example.android.smartbear.CourseInfo;
 import com.example.android.smartbear.R;
+import com.example.android.smartbear.base.fragments.BaseFragment;
 import com.example.android.smartbear.courses.data.Course;
 
 import butterknife.BindView;

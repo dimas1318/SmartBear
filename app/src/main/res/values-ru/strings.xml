@@ -7,4 +7,7 @@
     <string name="english">Английский</string>
     <string name="russian">Русский</string>
     <string name="course_details">Подробнее о курсе</string>
+    <string name="ok">Ок</string>
+    <string name="cancel">Отмена</string>
+    <string name="change">Изменить</string>
 </resources>

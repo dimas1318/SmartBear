@@ -10,8 +10,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.android.smartbear.BaseFragment;
 import com.example.android.smartbear.R;
+import com.example.android.smartbear.base.fragments.BaseFragment;
 
 import butterknife.ButterKnife;
 

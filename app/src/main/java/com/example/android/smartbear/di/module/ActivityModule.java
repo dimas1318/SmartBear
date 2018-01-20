@@ -1,6 +1,6 @@
 package com.example.android.smartbear.di.module;
 
-import com.example.android.smartbear.BaseActivity;
+import com.example.android.smartbear.base.activities.BaseActivity;
 import com.example.android.smartbear.di.PerActivity;
 
 import dagger.Module;

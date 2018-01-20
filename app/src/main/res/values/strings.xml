@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">SmartBear</string>
 
+    <!--Base Buttons-->
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="change">Change</string>
+
+    <!--Login-->
+
+    <!--Registration-->
+
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 

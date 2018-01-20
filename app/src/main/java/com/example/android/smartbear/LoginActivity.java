@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.smartbear.base.activities.BaseActivity;
 import com.example.android.smartbear.di.component.LoginComponent;
 import com.example.android.smartbear.navigation.Navigator;
 import com.example.android.smartbear.session.SessionManager;

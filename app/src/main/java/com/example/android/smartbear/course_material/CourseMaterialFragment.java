@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.smartbear.BaseFragment;
 import com.example.android.smartbear.R;
+import com.example.android.smartbear.base.fragments.BaseFragment;
 import com.example.android.smartbear.lessons.data.Material;
 import com.example.android.smartbear.material.TextCourseMaterialFragment;
 import com.google.android.gms.tasks.OnFailureListener;
