@@ -15,8 +15,8 @@ public class UserDataValidator {
         }
     }
 
-    public static void validateAddress(String address) throws TooShortTextException {
-        if (address.isEmpty()) {
+    public static void validateSurname(String surname) throws TooShortTextException {
+        if (surname.isEmpty()) {
             throw new TooShortTextException();
         }
     }

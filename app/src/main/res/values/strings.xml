@@ -6,9 +6,19 @@
     <string name="cancel">Cancel</string>
     <string name="change">Change</string>
 
-    <!--Login-->
-
     <!--Registration-->
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="email">Email</string>
+    <string name="mobile_number">Mobile number</string>
+    <string name="password">Password</string>
+    <string name="re_enter_password">Confirm password</string>
+    <string name="create_account">Sign Up</string>
+    <string name="already_a_member_login">Already a member? Login</string>
+    <string name="terms_conditions">By clicking SignUp you agree all the Terms and Conditions.</string>
+
+    <!--Login-->
+    <string name="forgot_your_password">Forgot your password?</string>
 
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>

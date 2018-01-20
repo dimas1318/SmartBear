@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="logout_user">Выйти</string>
-    <string name="text_line_courses">Курсы</string>
-    <string name="text_line_tools">Настройки</string>
     <string name="app_name">Умный Мишка</string>
-    <string name="english">Английский</string>
-    <string name="russian">Русский</string>
-    <string name="course_details">Подробнее о курсе</string>
+
+    <!--Base Buttons-->
     <string name="ok">Ок</string>
     <string name="cancel">Отмена</string>
     <string name="change">Изменить</string>
+
+    <!--Registration-->
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="email">Почта</string>
+    <string name="mobile_number">Мобильный телефон</string>
+    <string name="password">Пароль</string>
+    <string name="re_enter_password">Повторите пароль</string>
+    <string name="create_account">Зарегистрироваться</string>
+    <string name="already_a_member_login">Уже есть аккаунт? Зайти</string>
+    <string name="terms_conditions">By clicking SignUp you agree all the Terms and Conditions.</string>
+
+    <!--Login-->
+    <string name="forgot_your_password">Забыли пароль?</string>
+
+
+    <string name="logout_user">Выйти</string>
+    <string name="text_line_courses">Курсы</string>
+    <string name="text_line_tools">Настройки</string>
+    <string name="english">Английский</string>
+    <string name="russian">Русский</string>
+    <string name="course_details">Подробнее о курсе</string>
 </resources>
