@@ -10,6 +10,7 @@ import com.example.android.smartbear.CourseInfo;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.base.fragments.BaseFragment;
 import com.example.android.smartbear.courses.data.Course;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,5 +55,23 @@ public class ShortCourseDetailsFragment extends BaseFragment {
             description.setText("неизвестно");
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (FirebaseDatabase.getInstance() != null) {
+            FirebaseDatabase.getInstance().goOnline();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(FirebaseDatabase.getInstance() != null) {
+            FirebaseDatabase.getInstance().goOffline();
+        }
     }
 }

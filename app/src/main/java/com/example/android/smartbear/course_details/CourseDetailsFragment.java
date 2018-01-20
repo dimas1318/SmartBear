@@ -14,6 +14,7 @@ import com.example.android.smartbear.base.fragments.BaseFragment;
 import com.example.android.smartbear.course_material.CourseMaterialFragment;
 import com.example.android.smartbear.courses.data.Course;
 import com.example.android.smartbear.lessons.data.Lesson;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by Samsung on 26.10.2017.
@@ -68,5 +69,23 @@ public class CourseDetailsFragment extends BaseFragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (FirebaseDatabase.getInstance() != null) {
+            FirebaseDatabase.getInstance().goOnline();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(FirebaseDatabase.getInstance() != null) {
+            FirebaseDatabase.getInstance().goOffline();
+        }
     }
 }

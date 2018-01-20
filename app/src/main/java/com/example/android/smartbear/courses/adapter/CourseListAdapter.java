@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.android.smartbear.R;
 import com.example.android.smartbear.course_details.CourseDetailsFragment;
 import com.example.android.smartbear.courses.data.Course;
+import com.example.android.smartbear.courses.data.CourseListCache;
 import com.example.android.smartbear.courses.holder.CourseListViewHolder;
 import com.example.android.smartbear.database.CourseManager;
 import com.example.android.smartbear.database.CourseManagerFirebase;
@@ -27,6 +28,8 @@ public class CourseListAdapter extends RecyclerView.Adapter {
     private List<Course> courseList;
     private FragmentManager fragmentManager;
     private Context context;
+
+    private CourseManager courseManager = new CourseManagerFirebase();
 
 //    public CourseListAdapter(FragmentManager fragmentManager) {
 //        this.fragmentManager = fragmentManager;
@@ -80,7 +83,6 @@ public class CourseListAdapter extends RecyclerView.Adapter {
     }
 
     private void deleteCourseFromList(int position) {
-        CourseManager courseManager = new CourseManagerFirebase();
         courseManager.deleteCourse(courseList.get(position), position);
     }
 
@@ -94,6 +96,7 @@ public class CourseListAdapter extends RecyclerView.Adapter {
     }
 
     public void deleteCourse(int position) {
+        CourseListCache.getInstance().getCourseList().remove(courseList.get(position));
         courseList.remove(position);
         notifyItemRemoved(position);
 

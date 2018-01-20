@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.android.smartbear.courses.view.fragment.AllCoursesFragment;
 import com.example.android.smartbear.courses.view.fragment.CourseFragment;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +50,24 @@ public class FeedPagerFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         initPagerAndTabs();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (FirebaseDatabase.getInstance() != null) {
+            FirebaseDatabase.getInstance().goOnline();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(FirebaseDatabase.getInstance() != null) {
+            FirebaseDatabase.getInstance().goOffline();
+        }
     }
 
     private void initPagerAndTabs() {

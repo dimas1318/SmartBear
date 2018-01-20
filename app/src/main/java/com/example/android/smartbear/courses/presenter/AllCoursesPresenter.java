@@ -3,8 +3,10 @@ package com.example.android.smartbear.courses.presenter;
 import com.example.android.smartbear.MainActivity;
 import com.example.android.smartbear.courses.data.Course;
 import com.example.android.smartbear.courses.view.CourseView;
+import com.example.android.smartbear.courses.view.fragment.AllCoursesFragment;
 import com.example.android.smartbear.database.CourseManager;
 import com.example.android.smartbear.database.CourseManagerFirebase;
+import com.example.android.smartbear.events.CourseStateChangedEvent;
 import com.example.android.smartbear.events.ListOfAllCoursesDownloadedEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -59,5 +61,10 @@ public class AllCoursesPresenter {
     @Subscribe
     public void refreshData(ListOfAllCoursesDownloadedEvent event) {
         view.refreshData(event.getCourses());
+    }
+
+    @Subscribe
+    public void changeCourseState(CourseStateChangedEvent event) {
+        ((AllCoursesFragment) view).update();
     }
 }

@@ -1,12 +1,13 @@
 package com.example.android.smartbear.lessons.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by parsh on 19.11.2017.
  */
 
-public class Lesson {
+public class Lesson implements Serializable {
     private String Name;
     private List<Material> Materials;
     private int Order;

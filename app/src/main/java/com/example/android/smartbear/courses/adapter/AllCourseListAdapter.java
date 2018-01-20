@@ -68,6 +68,9 @@ public class AllCourseListAdapter extends RecyclerView.Adapter {
         if (userCourseList.contains(allCourseList.get(position))) {
             ((AllCourseListViewHolder) holder).addCourseButton.setText("You have already added this course");
             ((AllCourseListViewHolder) holder).addCourseButton.setClickable(false);
+        } else {
+            ((AllCourseListViewHolder) holder).addCourseButton.setText("Add course");
+            ((AllCourseListViewHolder) holder).addCourseButton.setClickable(true);
         }
     }
 

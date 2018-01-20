@@ -19,6 +19,7 @@ import com.example.android.smartbear.courses.adapter.CourseListAdapter;
 import com.example.android.smartbear.courses.data.Course;
 import com.example.android.smartbear.courses.presenter.CoursePresenter;
 import com.example.android.smartbear.courses.view.CourseView;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -94,6 +95,24 @@ public class CourseFragment extends BaseFragment implements CourseView {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if (FirebaseDatabase.getInstance() != null) {
+            FirebaseDatabase.getInstance().goOnline();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(FirebaseDatabase.getInstance() != null) {
+            FirebaseDatabase.getInstance().goOffline();
+        }
+    }
+
+    @Override
     public void refreshData(List<Course> courses) {
         adapter.set(courses);
         if (courses == null || courses.isEmpty()) {
@@ -101,11 +120,13 @@ public class CourseFragment extends BaseFragment implements CourseView {
         } else {
             noCoursesTextView.setVisibility(View.GONE);
         }
+        presenter.changeCourseState();
     }
 
     @Override
     public void deleteCourse(int position) {
         adapter.deleteCourse(position);
+        presenter.changeCourseState();
     }
 
     private void initView() {
