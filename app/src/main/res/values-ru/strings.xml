@@ -28,4 +28,9 @@
     <string name="english">Английский</string>
     <string name="russian">Русский</string>
     <string name="course_details">Подробнее о курсе</string>
+    <string name="login">Login</string>
+    <string name="no_account_yet_create_one">No account yet? Create one</string>
+    <string name="show_password">Show Password</string>
+    <string name="back">Back</string>
+    <string name="submit">Submit</string>
 </resources>

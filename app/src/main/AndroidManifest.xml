@@ -31,6 +31,9 @@
         <activity
             android:name=".SignupActivity"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

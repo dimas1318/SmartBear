@@ -2,7 +2,7 @@
     <string name="app_name">SmartBear</string>
 
     <!--Base Buttons-->
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="change">Change</string>
 
@@ -19,6 +19,15 @@
 
     <!--Login-->
     <string name="forgot_your_password">Forgot your password?</string>
+    <string name="login">Login</string>
+    <string name="no_account_yet_create_one">No account yet? Create one</string>
+    <string name="show_password">Show Password</string>
+    <string name="hide_password">Hide Password</string>
+
+    <!--Forgot Password-->
+    <string name="registered_email_id">Please enter your Registered Email Id below:</string>
+    <string name="back">Back</string>
+    <string name="submit">Submit</string>
 
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>

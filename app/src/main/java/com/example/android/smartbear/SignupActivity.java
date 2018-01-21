@@ -88,6 +88,12 @@ public class SignupActivity extends BaseActivity {
         unbinder.unbind();
     }
 
+    @Override
+    public void onBackPressed() {
+        navigator.navigateToLoginActivity(SignupActivity.this);
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
     @OnClick(R.id.btn_signup)
     public void onSignupButtonClicked() {
         String name = nameText.getText().toString();
@@ -120,11 +126,8 @@ public class SignupActivity extends BaseActivity {
             return;
         }
 
-//        signupBtn.setEnabled(false);
-
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppTheme_Dark_Dialog);
-//        progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();

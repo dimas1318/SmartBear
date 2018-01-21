@@ -8,4 +8,8 @@
 
     <!--Registration-->
     <dimen name="reg_text_input_layout_margin">8dp</dimen>
+
+    <!--Login-->
+    <dimen name="login_text_input_layout_margin">8dp</dimen>
+    <dimen name="forgot_password_text_input_layout_margin">8dp</dimen>
 </resources>

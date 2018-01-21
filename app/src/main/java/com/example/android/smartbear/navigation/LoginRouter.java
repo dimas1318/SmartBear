@@ -12,4 +12,6 @@ public interface LoginRouter {
     void navigateToLoginActivity(AppCompatActivity activity);
 
     void navigateToSignupActivity(AppCompatActivity activity);
+
+    void navigateToForgotPasswordActivity(AppCompatActivity activity);
 }

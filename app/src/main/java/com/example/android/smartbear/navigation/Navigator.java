@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.android.smartbear.FeedPagerFragment;
+import com.example.android.smartbear.ForgotPasswordActivity;
 import com.example.android.smartbear.LoginActivity;
 import com.example.android.smartbear.MainActivity;
 import com.example.android.smartbear.SignupActivity;
@@ -52,6 +53,13 @@ public class Navigator extends BaseNavigator implements LoginRouter, MainRouter 
     @Override
     public void navigateToSignupActivity(AppCompatActivity activity) {
         Intent intent = new Intent(activity, SignupActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    @Override
+    public void navigateToForgotPasswordActivity(AppCompatActivity activity) {
+        Intent intent = new Intent(activity, ForgotPasswordActivity.class);
         activity.startActivity(intent);
         activity.finish();
     }
